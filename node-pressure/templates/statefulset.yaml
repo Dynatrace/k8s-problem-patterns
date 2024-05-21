@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: node-pressure
+spec:
+  selector:
+    matchLabels:
+      app: node-pressure
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: node-pressure
+      annotations:
+        oneagent.dynatrace.com/inject: "false"
+    spec:
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      serviceAccountName: node-pressure
+      volumes:
+      - name: script
+        configMap:
+          name: script
+      containers:
+      - name: node-pressure
+        image: alpine
+        command:
+        - sh
+        - /script/script.sh
+        volumeMounts:
+        - name: script
+          mountPath: /script
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        restartPolicy: Always
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "ps -ef | grep stress | grep -v grep"
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "ps -ef | grep stress | grep -v grep"
+          initialDelaySeconds: 120
+          periodSeconds: 5
