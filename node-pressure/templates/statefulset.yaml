@@ -17,10 +17,19 @@ spec:
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
       serviceAccountName: node-pressure
+      volumes:
+      - name: script
+        configMap:
+          name: script
       containers:
       - name: node-pressure
         image: alpine
-        command: ["sh", "-c", "apk update && apk add curl stress-ng kubectl && sleep 10 && if [[ $(kubectl get node $NODE_NAME -o jsonpath='{.status.conditions[?(@.type==\"MemoryPressure\")].status}') == \"False\" ]]; then echo \"No pressure; allocating memory\"; stress-ng --vm 1 --vm-bytes 5g --vm-hang 0; else echo \"Sleeping...\" && sleep 9999999999999999; fi"]
+        command:
+        - sh
+        - /script/script.sh
+        volumeMounts:
+        - name: script
+          mountPath: /script
         env:
         - name: NODE_NAME
           valueFrom:
