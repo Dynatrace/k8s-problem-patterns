@@ -8,7 +8,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: exceeded-quota-demo-role
-  namespace: exceed-quota
+  namespace: exceeded-quota
 rules:
 - apiGroups:
   - "apps"
@@ -29,7 +29,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: exceeded-quota-demo-role-binding
-  namespace: exceed-quota
+  namespace: exceeded-quota
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -37,4 +37,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: exceeded-quota-demo
-  namespace: problem-patterns
+  namespace: exceeded-quota

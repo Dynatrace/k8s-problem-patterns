@@ -17,7 +17,7 @@ spec:
             args:
               - scale
               - deployment
-              - events-processor
+              - exceeded-quota-demo
               - --replicas=3
               - --namespace=exceed-quota
 
@@ -41,7 +41,7 @@ spec:
             args:
               - scale
               - deployment
-              - events-processor
+              - exceeded-quota-demo
               - --replicas=4
               - --namespace=exceed-quota
 
@@ -65,6 +65,6 @@ spec:
             args:
               - scale
               - deployment
-              - events-processor
+              - exceeded-quota-demo
               - --replicas=2
               - --namespace=exceed-quota

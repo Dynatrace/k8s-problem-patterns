@@ -1,4 +1,4 @@
 apiVersion: v2
-name: exceed-quota
+name: exceeded-quota
 version: 1.0.0 
 type: application

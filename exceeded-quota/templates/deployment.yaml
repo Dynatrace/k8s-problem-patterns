@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: exceed-quota-demo
-  namespace: exceed-quota
+  name: exceeded-quota-demo
+  namespace: exceeded-quota
 spec:
   selector:
     matchLabels:
-      demo: exceed-quota
+      demo: exceeded-quota
   replicas: 3
   template:
     metadata:
       labels:
-        demo: exceed-quota
+        demo: exceeded-quota
     spec:
       containers:
       - name: tomcat
