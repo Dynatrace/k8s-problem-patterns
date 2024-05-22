@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: exceeded-quota-demo-scale-out-3
-  namespace: exceed-quota
+  namespace: exceeded-quota
 spec:
   schedule: '0 2 * * *'
   jobTemplate:
@@ -26,7 +26,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: exceeded-quota-demo-scale-out-4
-  namespace: exceed-quota
+  namespace: exceeded-quota
 spec:
   schedule: '15 5 * * *'
   jobTemplate:
@@ -50,7 +50,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: exceeded-quota-demo-scale-in
-  namespace: exceed-quota
+  namespace: exceeded-quota
 spec:
   schedule: '30 5 * * *'
   jobTemplate:
