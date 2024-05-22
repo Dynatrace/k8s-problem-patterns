@@ -1,0 +1,70 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: exceeded-quota-demo-scale-out-3
+  namespace: exceed-quota
+spec:
+  schedule: '0 2 * * *'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: exceeded-quota-demo
+          containers:
+          - name: scale-out
+            image: bitnami/kubectl:latest
+            args:
+              - scale
+              - deployment
+              - events-processor
+              - --replicas=3
+              - --namespace=exceed-quota
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: exceeded-quota-demo-scale-out-4
+  namespace: exceed-quota
+spec:
+  schedule: '15 5 * * *'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: exceeded-quota-demo
+          containers:
+          - name: scale-out
+            image: bitnami/kubectl:latest
+            args:
+              - scale
+              - deployment
+              - events-processor
+              - --replicas=4
+              - --namespace=exceed-quota
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: exceeded-quota-demo-scale-in
+  namespace: exceed-quota
+spec:
+  schedule: '30 5 * * *'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: exceeded-quota-demo
+          containers:
+          - name: scale-in
+            image: bitnami/kubectl:latest
+            args:
+              - scale
+              - deployment
+              - events-processor
+              - --replicas=2
+              - --namespace=exceed-quota

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exceed-quota-demo
+  namespace: exceed-quota
+spec:
+  selector:
+    matchLabels:
+      demo: exceed-quota
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        demo: exceed-quota
+    spec:
+      containers:
+      - name: tomcat
+        image: tomcat
+        resources:
+          requests:
+            memory: 100Mi

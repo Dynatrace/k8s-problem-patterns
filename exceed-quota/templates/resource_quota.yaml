@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: exceed-quota-demo
+  namespace: exceed-quota
+spec:
+  hard:
+    requests.memory: 310Mi
