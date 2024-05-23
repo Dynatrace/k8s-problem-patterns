@@ -5,4 +5,4 @@ metadata:
   namespace: exceeded-quota
 spec:
   hard:
-    requests.memory: 310Mi
+    requests.memory: 710Mi

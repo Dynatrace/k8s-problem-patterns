@@ -14,6 +14,9 @@ spec:
           containers:
           - name: scale-out
             image: bitnami/kubectl:latest
+            resources:
+              requests:
+                memory: 64Mi
             args:
               - scale
               - deployment
@@ -38,6 +41,9 @@ spec:
           containers:
           - name: scale-out
             image: bitnami/kubectl:latest
+            resources:
+              requests:
+                memory: 64Mi
             args:
               - scale
               - deployment
@@ -62,6 +68,9 @@ spec:
           containers:
           - name: scale-in
             image: bitnami/kubectl:latest
+            resources:
+              requests:
+                memory: 64Mi
             args:
               - scale
               - deployment
