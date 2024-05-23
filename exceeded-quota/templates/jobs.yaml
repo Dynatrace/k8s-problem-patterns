@@ -19,7 +19,7 @@ spec:
               - deployment
               - exceeded-quota-demo
               - --replicas=3
-              - --namespace=exceed-quota
+              - --namespace=exceeded-quota
 
 ---
 apiVersion: batch/v1
@@ -43,7 +43,7 @@ spec:
               - deployment
               - exceeded-quota-demo
               - --replicas=4
-              - --namespace=exceed-quota
+              - --namespace=exceeded-quota
 
 ---
 apiVersion: batch/v1
@@ -67,4 +67,4 @@ spec:
               - deployment
               - exceeded-quota-demo
               - --replicas=2
-              - --namespace=exceed-quota
+              - --namespace=exceeded-quota
