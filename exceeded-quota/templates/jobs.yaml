@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: exceeded-quota-demo-scale-out-3
-  namespace: exceeded-quota
+  namespace: problem-patterns
 spec:
   schedule: '0 2 * * *'
   jobTemplate:
@@ -14,9 +14,6 @@ spec:
           containers:
           - name: scale-out
             image: bitnami/kubectl:latest
-            resources:
-              requests:
-                memory: 64Mi
             args:
               - scale
               - deployment
@@ -29,7 +26,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: exceeded-quota-demo-scale-out-4
-  namespace: exceeded-quota
+  namespace: problem-patterns
 spec:
   schedule: '15 5 * * *'
   jobTemplate:
@@ -41,9 +38,6 @@ spec:
           containers:
           - name: scale-out
             image: bitnami/kubectl:latest
-            resources:
-              requests:
-                memory: 64Mi
             args:
               - scale
               - deployment
@@ -56,7 +50,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: exceeded-quota-demo-scale-in
-  namespace: exceeded-quota
+  namespace: problem-patterns
 spec:
   schedule: '30 5 * * *'
   jobTemplate:
@@ -68,9 +62,6 @@ spec:
           containers:
           - name: scale-in
             image: bitnami/kubectl:latest
-            resources:
-              requests:
-                memory: 64Mi
             args:
               - scale
               - deployment
