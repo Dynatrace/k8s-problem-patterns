@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: exceeded-quota-demo-scale-out-3
-  namespace: problem-patterns
+  namespace: {{ $.Release.Namespace }}
 spec:
   schedule: '0 2 * * *'
   jobTemplate:
@@ -19,14 +19,14 @@ spec:
               - deployment
               - exceeded-quota-demo
               - --replicas=3
-              - --namespace=exceeded-quota
+              - --namespace={{ $.Values.workloadNamespace }}
 
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: exceeded-quota-demo-scale-out-4
-  namespace: problem-patterns
+  namespace: {{ $.Release.Namespace }}
 spec:
   schedule: '15 5 * * *'
   jobTemplate:
@@ -43,14 +43,14 @@ spec:
               - deployment
               - exceeded-quota-demo
               - --replicas=4
-              - --namespace=exceeded-quota
+              - --namespace={{ $.Values.workloadNamespace }}
 
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: exceeded-quota-demo-scale-in
-  namespace: problem-patterns
+  namespace: {{ $.Release.Namespace }}
 spec:
   schedule: '30 5 * * *'
   jobTemplate:
@@ -67,4 +67,4 @@ spec:
               - deployment
               - exceeded-quota-demo
               - --replicas=2
-              - --namespace=exceeded-quota
+              - --namespace={{ $.Values.workloadNamespace }}

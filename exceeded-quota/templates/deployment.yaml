@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: exceeded-quota-demo
-  namespace: exceeded-quota
+  namespace: {{ $.Values.workloadNamespace }}
 spec:
   selector:
     matchLabels:
