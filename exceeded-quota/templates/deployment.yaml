@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exceeded-quota-demo
+  namespace: {{ $.Values.workloadNamespace }}
+spec:
+  selector:
+    matchLabels:
+      demo: exceeded-quota
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        demo: exceeded-quota
+    spec:
+      containers:
+      - name: tomcat
+        image: tomcat
+        resources:
+          requests:
+            memory: 100Mi

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: exceeded-quota-demo
+  namespace: {{ $.Values.workloadNamespace }}
+spec:
+  hard:
+    requests.memory: 310Mi
