@@ -15,9 +15,17 @@ This pattern uses a vendor neutral OCI registry called zotregistry (a CNCF sandb
 
 ### Deploy pattern, namespace for workloads can be selected and supporting resources like cronjobs will be in the problem-patterns namespace.
 ```
-helm install pvc-out-of-space ./pvc-out-of-space --namespace <target namespace for zot workload> --create-namespace
+helm upgrade pvc-out-of-space ./pvc-out-of-space \
+  --install \
+  --namespace <target namespace for zot workload> \
+  --create-namespace
 ```
-### Deploy pattern with custom problem patterns namespace and a 10G pvc
+### Deploy pattern with custom problem patterns namespace and a 5G pvc
 ```
-helm install pvc-out-of-space ./pvc-out-of-space --namespace <target namespace for zot workload> --set problemPatternsNs=<problem-patterns-ns>,zot.pvc.storage=5G --create-namespace
+helm upgrade pvc-out-of-space ./pvc-out-of-space \
+  --install \
+  --namespace <target namespace for zot workload> \
+  --set problemPatternsNs=<problem-patterns-ns> \
+  --set zot.pvc.storage=5G \
+  --create-namespace
 ```

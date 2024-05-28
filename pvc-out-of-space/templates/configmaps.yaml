@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: zot-containerfile
-  namespace: {{ .Values.problemPatternsNs }}
+  namespace: {{ .Values.nonWorkloadNamespace }}
 data:
   Containerfile: |
     FROM ubuntu:20.04
@@ -15,7 +15,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: zot-delete-image-script
-  namespace: {{ .Values.problemPatternsNs }}
+  namespace: {{ .Values.nonWorkloadNamespace }}
 data:
   delete_images.sh: |
     #!/bin/sh

@@ -1,4 +1,4 @@
-problemPatternsNs: "problem-patterns"
+nonWorkloadNamespace: "problem-patterns"
 
 zot:
   fullnameOverride: zot
