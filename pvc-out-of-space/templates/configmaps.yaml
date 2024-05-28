@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zot-containerfile
+  namespace: {{ .Values.problemPatternsNs }}
+data:
+  Containerfile: |
+    FROM ubuntu:20.04
+
+    ARG FILE_SIZE=500M
+
+    RUN head -c $FILE_SIZE </dev/urandom > taking-space.txt
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zot-delete-image-script
+  namespace: {{ .Values.problemPatternsNs }}
+data:
+  delete_images.sh: |
+    #!/bin/sh
+
+    set -eu
+
+    echo "Downloading regclient..."
+    wget https://github.com/regclient/regclient/releases/latest/download/regctl-linux-amd64 -O regctl --quiet
+    chmod 755 regctl
+    echo "done"
+    
+    echo "Listing images..."
+    images=$(./regctl tag list zot.{{ .Release.Namespace }}:5000/big-image --host user=admin,pass=$REG_PW,reg=zot.{{ .Release.Namespace }}:5000,tls=disabled)
+    echo $images
+    echo "done"
+
+    echo "Deleting images..."
+    for image in $images;
+    do
+      echo "Deleting big-image:${image}..."
+      ./regctl tag delete zot.{{ .Release.Namespace }}:5000/big-image:$image --host user=admin,pass=$REG_PW,reg=zot.{{ .Release.Namespace }}:5000,tls=disabled
+      echo "deleted big-image:${image}"
+    done
+    echo "done deleting images"

@@ -1,0 +1,48 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: kaniko-big-image-push
+  namespace: {{ .Values.problemPatternsNs }}
+spec:
+  schedule: '*/15 * * * *' # every 15th minute
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: kaniko
+              image: gcr.io/kaniko-project/executor:latest
+              args:
+                - "--verbosity=trace"
+                - "--insecure"
+                - "--skip-tls-verify"
+                - "--build-arg=FILE_SIZE=$(FILE_SIZE)"
+                - "--dockerfile=Containerfile"
+                - "--destination=zot.{{ .Release.Namespace }}:5000/big-image:$(IMAGE_NAME)"
+              env:
+                - name: IMAGE_NAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+                - name: FILE_SIZE
+                  value: 500M
+              volumeMounts:
+                - name: reg-creds
+                  mountPath: /kaniko/.docker/
+                - name: dockerfile
+                  mountPath: /workspace/
+          volumes:
+            - name: reg-creds
+              secret:
+                secretName: zot-reg-creds
+                items:
+                  - key: config.json
+                    path: config.json
+            - name: dockerfile
+              configMap:
+                name: zot-containerfile
+                items:
+                  - key: Containerfile
+                    path: Containerfile
+---
