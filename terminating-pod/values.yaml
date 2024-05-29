@@ -9,4 +9,4 @@ podLabels: {
   problemPattern: terminating-pod 
 }
 
-problemPatternsNs: problem-patterns
+alternativeNamespace: problem-patterns

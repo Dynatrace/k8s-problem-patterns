@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: terminating-pod-demo-scale-out
-  namespace: {{ .Values.problemPatternsNs }}
+  namespace: {{ .Values.alternativeNamespace }}
 spec:
   schedule: '10 20 * * *'
   jobTemplate:
@@ -26,7 +26,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: terminating-pod-demo-scale-in
-  namespace: {{ .Values.problemPatternsNs }}
+  namespace: {{ .Values.alternativeNamespace }}
 spec:
   schedule: '20 20 * * *'
   jobTemplate:
@@ -50,7 +50,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: terminating-pod-demo-patch
-  namespace: {{ .Values.problemPatternsNs }}
+  namespace: {{ .Values.alternativeNamespace }}
 spec:
   schedule: '0 20 * * *'
   jobTemplate:

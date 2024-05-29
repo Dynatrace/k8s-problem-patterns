@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: zot-containerfile
-  namespace: {{ .Values.nonWorkloadNamespace }}
+  namespace: {{ .Values.alternativeNamespace }}
 data:
   Containerfile: |
     FROM ubuntu:20.04
@@ -15,7 +15,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: zot-delete-image-script
-  namespace: {{ .Values.nonWorkloadNamespace }}
+  namespace: {{ .Values.alternativeNamespace }}
 data:
   delete_images.sh: |
 {{ .Files.Get "files/delete_images.sh" | indent 4}}

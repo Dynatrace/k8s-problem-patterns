@@ -9,7 +9,7 @@ demoRequests:
     min: 4
 
 # namespace where the cron-jobs will be deployed
-jobNamespace: problem-patterns
+alternativeNamespace: problem-patterns
 
 # nodeSelector is completely optional, remove it if not needed
 nodeSelector:
