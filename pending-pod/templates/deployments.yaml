@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-requests
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.demoRequests.replicas.min }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-requests
+  template:
+    metadata:
+      annotations:
+        oneagent.dynatrace.com/inject: "false"
+      labels:
+        app: {{ .Release.Name }}-requests
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-requests
+          image: busybox
+          command: ["sh", "-c", "sleep infinity"]
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+{{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+{{- end }}
+      tolerations:
+        - effect: NoSchedule
+          key: demo
+          operator: Equal
+          value: pending-pod
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-tolerations
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.demoTolerations.replicas.min }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-tolerations
+  template:
+    metadata:
+      annotations:
+        oneagent.dynatrace.com/inject: "false"
+      labels:
+        app: {{ .Release.Name }}-tolerations
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-tolerations
+          image: busybox
+          command: ["sh", "-c", "sleep infinity"]
+{{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+{{- end }}
+      tolerations:
+        - effect: NoSchedule
+          key: some-non-existent-key
+          operator: Equal
+          value: foobar

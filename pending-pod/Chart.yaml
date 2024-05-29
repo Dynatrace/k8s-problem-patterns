@@ -1,0 +1,4 @@
+apiVersion: v2
+name: pending-pod
+version: 1.0.0
+type: application
