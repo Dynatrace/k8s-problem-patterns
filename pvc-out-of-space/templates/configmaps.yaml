@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zot-containerfile
+  namespace: {{ .Values.nonWorkloadNamespace }}
+data:
+  Containerfile: |
+    FROM ubuntu:20.04
+
+    ARG FILE_SIZE=500M
+
+    RUN head -c $FILE_SIZE </dev/urandom > taking-space.txt
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zot-delete-image-script
+  namespace: {{ .Values.nonWorkloadNamespace }}
+data:
+  delete_images.sh: |
+{{ .Files.Get "files/delete_images.sh" | indent 4}}

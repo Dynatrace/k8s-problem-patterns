@@ -24,3 +24,23 @@ This example creates the workload (nginx deployment) in the terminating-pod name
 ```
 helm upgrade terminating-pod ./terminating-pod --install --namespace terminating-pod --create-namespace --set problemPatternsNs=problem-patterns
 ```
+
+## PVC out of space pattern
+This pattern uses a vendor neutral OCI registry called zotregistry (a CNCF sandbox project). Zotregistry is simple, but powerful enough to support production-ready features like permissions and automatic garbage collection. A cronjob pushes a large image using Kaniko at regular intervals, and another cronjob clears these images once a day at 23:45 UTC.
+
+### Deploy pattern, namespace for workloads can be selected and supporting resources like cronjobs will be in the problem-patterns namespace.
+```
+helm upgrade pvc-out-of-space ./pvc-out-of-space \
+  --install \
+  --namespace <target namespace for zot workload> \
+  --create-namespace
+```
+### Deploy pattern with custom problem patterns namespace and a 5G pvc
+```
+helm upgrade pvc-out-of-space ./pvc-out-of-space \
+  --install \
+  --namespace <target namespace for zot workload> \
+  --set nonWorkloadNamespace=<problem-patterns-ns> \
+  --set zot.pvc.storage=5G \
+  --create-namespace
+```

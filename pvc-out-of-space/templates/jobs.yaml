@@ -1,0 +1,90 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: kaniko-big-image-push
+  namespace: {{ .Values.nonWorkloadNamespace }}
+spec:
+  schedule: '*/15 * * * *' # every 15th minute
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: kaniko
+              image: gcr.io/kaniko-project/executor:latest
+              args:
+                - "--verbosity=trace"
+                - "--insecure"
+                - "--skip-tls-verify"
+                - "--build-arg=FILE_SIZE=$(FILE_SIZE)"
+                - "--dockerfile=Containerfile"
+                - "--destination=zot.{{ .Release.Namespace }}:5000/big-image:$(IMAGE_NAME)"
+              env:
+                - name: IMAGE_NAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+                - name: FILE_SIZE
+                  value: 500M
+              volumeMounts:
+                - name: reg-creds
+                  mountPath: /kaniko/.docker/
+                - name: dockerfile
+                  mountPath: /workspace/
+          volumes:
+            - name: reg-creds
+              secret:
+                secretName: zot-reg-creds
+                items:
+                  - key: config.json
+                    path: config.json
+            - name: dockerfile
+              configMap:
+                name: zot-containerfile
+                items:
+                  - key: Containerfile
+                    path: Containerfile
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: delete-tags
+  namespace: {{ .Values.nonWorkloadNamespace }}
+spec:
+  schedule: '45 23 * * *' # 23:45 each day
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: delete-tags
+              image: busybox
+              env:
+                - name: REG_PW
+                  valueFrom:
+                    secretKeyRef:
+                      name: zot-admin
+                      key: admin_password
+                - name: NAMESPACE
+                  value: {{ .Release.Namespace }}
+              args:
+                - "sh"
+                - "-c"
+                - "/script/delete_images.sh"
+              volumeMounts:
+                - name: script
+                  mountPath: /script
+                  readOnly: true
+          volumes:
+            - name: script
+              configMap:
+                name: zot-delete-image-script
+                items:
+                  - key: delete_images.sh
+                    path: delete_images.sh
+                defaultMode: 0755
