@@ -70,6 +70,8 @@ spec:
                     secretKeyRef:
                       name: zot-admin
                       key: admin_password
+                - name: NAMESPACE
+                  value: {{ .Release.Namespace }}
               args:
                 - "sh"
                 - "-c"
