@@ -1,0 +1,38 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: pending-pod
+rules:
+  - apiGroups:
+      - "apps"
+    resources:
+      - deployments
+    verbs:
+      - list
+      - get
+      - patch
+  - apiGroups:
+      - "apps"
+    resources:
+      - deployments/scale
+    verbs:
+      - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: pending-pod
+subjects:
+  - kind: ServiceAccount
+    name: pending-pod
+    namespace: {{ .Values.jobNamespace }}
+roleRef:
+  kind: ClusterRole
+  name: pending-pod
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pending-pod
+  namespace: {{ .Values.jobNamespace }}

@@ -1,0 +1,25 @@
+demoTolerations:
+  replicas:
+    max: 1
+    min: 0
+
+demoRequests:
+  replicas:
+    max: 5
+    min: 4
+
+# namespace where the cron-jobs will be deployed
+jobNamespace: problem-patterns
+
+# nodeSelector is completely optional, remove it if not needed
+nodeSelector:
+  demo: pending-pod
+
+# resources for all deployments
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "450m"
+  limits:
+    memory: "128Mi"
+    cpu: "450m"

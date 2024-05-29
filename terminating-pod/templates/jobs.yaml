@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: initial-scale-in
+  namespace: {{ .Values.problemPatternsNs }}
+spec:
+  template:
+    spec:
+      serviceAccountName: terminating-pod-demo
+      containers:
+      - name: scale-in
+        image: rancher/kubectl:v1.23.7
+        args:
+          - scale
+          - deployment
+          - nginx-deployment
+          - --namespace={{ .Release.Namespace }}
+          - --replicas=2
+      restartPolicy: OnFailure
+  backoffLimit: 4
