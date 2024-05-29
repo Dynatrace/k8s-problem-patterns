@@ -2,7 +2,6 @@ replicaCount: 3
 
 image:
   repository: nginx
-  pullPolicy: IfNotPresent
   tag: "1.14.2"
 
 podLabels: {
