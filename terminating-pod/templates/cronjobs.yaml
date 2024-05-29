@@ -1,0 +1,69 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: terminating-pod-demo-scale-out
+  namespace: {{ .Values.problemPatternsNs }}
+spec:
+  schedule: '10 20 * * *'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: terminating-pod-demo
+          containers:
+          - name: scale-out
+            image: rancher/kubectl:v1.23.7
+            args:
+              - scale
+              - deployment
+              - nginx-deployment
+              - --namespace={{ .Release.Namespace }}
+              - --replicas=3
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: terminating-pod-demo-scale-in
+  namespace: {{ .Values.problemPatternsNs }}
+spec:
+  schedule: '20 20 * * *'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: terminating-pod-demo
+          containers:
+          - name: scale-in
+            image: rancher/kubectl:v1.23.7
+            args:
+              - scale
+              - deployment
+              - nginx-deployment
+              - --namespace={{ .Release.Namespace }}
+              - --replicas=2
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: terminating-pod-demo-patch
+  namespace: {{ .Values.problemPatternsNs }}
+spec:
+  schedule: '0 20 * * *'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: terminating-pod-demo
+          containers:
+            - name: patch
+              image: bitnami/kubectl:1.23.7
+              command:
+                - sh
+                - -c
+              args:
+                - "kubectl patch pods --namespace={{ .Release.Namespace }} --type json --patch='[{\"op\":\"remove\",\"path\":\"/metadata/finalizers\"}]' $(kubectl get pods --namespace={{ .Release.Namespace }} -l 'problemPattern=terminating-pod' -o=jsonpath='{.items[?(@.metadata.deletionTimestamp)].metadata.name}')"
