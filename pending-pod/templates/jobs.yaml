@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: {{ .Release.Name }}-requests-scale-up
-  namespace: {{ .Values.jobNamespace }}
+  namespace: {{ .Values.alternativeNamespace }}
 spec:
   schedule: "0 0,8,16 * * *" # Daily @ 00:00, 08:00 & 16:00
   jobTemplate:
@@ -24,7 +24,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: {{ .Release.Name }}-requests-scale-down
-  namespace: {{ .Values.jobNamespace }}
+  namespace: {{ .Values.alternativeNamespace }}
 spec:
   schedule: "0 4,12,20 * * *" # Daily @ 04:00, 12:00 & 20:00
   jobTemplate:
@@ -46,7 +46,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: {{ .Release.Name }}-tolerations-scale-up
-  namespace: {{ .Values.jobNamespace }}
+  namespace: {{ .Values.alternativeNamespace }}
 spec:
   schedule: "0 1,9,17 * * *" # Daily @ 01:00, 09:00 & 17:00
   jobTemplate:
@@ -68,7 +68,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: {{ .Release.Name }}-tolerations-scale-down
-  namespace: {{ .Values.jobNamespace }}
+  namespace: {{ .Values.alternativeNamespace }}
 spec:
   schedule: "0 5,13,21 * * *" # Daily @ 05:00, 13:00 & 21:00
   jobTemplate:

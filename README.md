@@ -1,13 +1,13 @@
 # k8s-problem-patterns
 
 ## Exceed-quota pattern
-### Deploy pattern (workload will be deployed to exceed-quota namespace)
+### Deploy pattern (workload will be deployed to exceeded-quota namespace, supporting resources by default to problem-patterns namespace)
 ```
-helm upgrade exceeded-quota ./exceeded-quota --install --namespace <target_namespace> --create-namespace
+helm upgrade exceeded-quota ./exceeded-quota --install --namespace <workload_namespace> --create-namespace
 ```
-### Deploy pattern (set namespace where workload will be deployed)
+### Deploy pattern (set namespace where supporting resources will be deployed)
 ```
-helm upgrade exceeded-quota ./exceeded-quota --install --namespace <target_namespace> --create-namespace --set workloadNamespace=<workload_namespace>
+helm upgrade exceeded-quota ./exceeded-quota --install --namespace <workload_namespace> --create-namespace --set alternativeNamespace=<problem_patterns_namespace>
 ```
 
 ## Terminating Pod pattern
@@ -22,7 +22,7 @@ There are three additional CronJobs that reset the pattern by
 ### Usage
 This example creates the workload (nginx deployment) in the terminating-pod namespace and the other resources like jobs and serviceaccount in the problem-patterns namespace.
 ```
-helm upgrade terminating-pod ./terminating-pod --install --namespace terminating-pod --create-namespace --set problemPatternsNs=problem-patterns
+helm upgrade terminating-pod ./terminating-pod --install --namespace terminating-pod --create-namespace --set alternativeNamespace=problem-patterns
 ```
 
 ## PVC out of space pattern
@@ -40,7 +40,7 @@ helm upgrade pvc-out-of-space ./pvc-out-of-space \
 helm upgrade pvc-out-of-space ./pvc-out-of-space \
   --install \
   --namespace <target namespace for zot workload> \
-  --set nonWorkloadNamespace=<problem-patterns-ns> \
+  --set alternativeNamespace=<problem-patterns-ns> \
   --set zot.pvc.storage=5G \
   --create-namespace
 ```

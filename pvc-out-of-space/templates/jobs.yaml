@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: kaniko-big-image-push
-  namespace: {{ .Values.nonWorkloadNamespace }}
+  namespace: {{ .Values.alternativeNamespace }}
 spec:
   schedule: '*/15 * * * *' # every 15th minute
   jobTemplate:
@@ -52,7 +52,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: delete-tags
-  namespace: {{ .Values.nonWorkloadNamespace }}
+  namespace: {{ .Values.alternativeNamespace }}
 spec:
   schedule: '45 23 * * *' # 23:45 each day
   jobTemplate:
