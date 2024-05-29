@@ -40,7 +40,7 @@ helm upgrade pvc-out-of-space ./pvc-out-of-space \
 helm upgrade pvc-out-of-space ./pvc-out-of-space \
   --install \
   --namespace <target namespace for zot workload> \
-  --set problemPatternsNs=<problem-patterns-ns> \
+  --set nonWorkloadNamespace=<problem-patterns-ns> \
   --set zot.pvc.storage=5G \
   --create-namespace
 ```
