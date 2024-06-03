@@ -1,0 +1,2 @@
+# namespace where the cron-jobs will be deployed
+alternativeNamespace: problem-patterns
