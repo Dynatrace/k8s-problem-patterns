@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: frequent-restarts-kill-nginx
+  namespace: {{ .Values.alternativeNamespace }}
+spec:
+  schedule: 0,1,2 10 * * *
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: frequent-restarts
+          containers:
+            - name: kill-nginx
+              image: bitnami/kubectl:latest
+              command:
+                - /bin/sh
+                - -c
+                - kubectl
+                - exec
+                - --namespace
+                - {{ .Release.Namespace }}
+                - deployment/{{ .Release.Name }}-ingress-nginx-controller
+                - --
+                - pkill
+                - /nginx-ingress-controller
