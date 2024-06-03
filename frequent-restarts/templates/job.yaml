@@ -18,11 +18,5 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - kubectl
-                - exec
-                - --namespace
-                - {{ .Release.Namespace }}
-                - deployment/{{ .Release.Name }}-ingress-nginx-controller
-                - --
-                - pkill
-                - /nginx-ingress-controller
+                - |
+                  kubectl exec --namespace {{ .Release.Namespace }} deployment/{{ .Release.Name }}-ingress-nginx-controller -- pkill /nginx-ingress-controller
