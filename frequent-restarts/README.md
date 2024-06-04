@@ -1,20 +1,35 @@
 # Problem-Pattern 'frequent-restarts'
+![ChartVersion](https://img.shields.io/badge/ChartVersion-1.1.0-informational?style=flat)
+
 ## Overview
-This chart will deploy `ingress-nginx` in the given namespace. The controller will be artificially restarted by a cron job.\
-By default the pkill will happen at 10:00, 10:01 & 10:02 UTC (`0,1,2 10 * * *`).
+This chart will deploy `ingress-nginx` in the defined`Namespace`. The controller will be restarted by a `CronJob`.\
+By default the pkill will happen at 10:00, 10:01 & 10:02 UTC (`0,1,2 10 * * *`). This can be adjusted in the [values.yaml](values.yaml) file.\
+Each trigger of the `CronJob` results in a failed readiness probe. This failure causes the container to restart.
 
-Each trigger of the cron job results in a failed readiness probe. This failure causes the container to restart.
-The cron job and its required service account will be deployed in the default "problem-patterns" namespace (unless updated in the [values.yaml](values.yaml)). All other components will adhere to the specified `--namespace` in the `helm upgrade --install` command.
+The `CronJob` and its required `ServiceAccount` will be deployed in the default "problem-patterns" `Namespace` (unless updated in the [values.yaml](values.yaml)).\
+All other components will adhere to the specified `--namespace` in the `helm upgrade --install` command.
 
-## Install
-Simply run a helm install command from the root of this project:
+### Use-Case
+In this demo we want to force a pod to be restarted a few times. This will increase the restart count on the pod as well as potentially raise an alert if the workload is monitored.\
+To fully utilize this demo you might want to adjust the schedule according to your needs. 
 ```shell
-# first off we need to acquire the necessary files for our ingress-nginx dependency
-helm dependency build ./frequent-restarts
-helm upgrade --install frequent-restarts ./frequent-restarts --namespace frequent-restarts --create-namespace
+$ kubectl get pod -l app.kubernetes.io/name=ingress-nginx -n frequent-restarts
+NAME                                                          READY   STATUS    RESTARTS       AGE
+frequent-restarts-ingress-nginx-controller-748ff659db-gmmhj   1/1     Running   3 (11h ago)   19h
 ```
 
-## Remove
+## Installation
+After building the dependency for `ingress-nginx` simply run a `helm upgrade` command from the root of this repository:
+```shell
+helm dependency build ./frequent-restarts
+helm upgrade --install --dependency-update frequent-restarts ./frequent-restarts --namespace frequent-restarts --create-namespace
+```
+
+## Removal
+Helm uninstall will get rid of everything but the namespaces. Thus we need to issue a kubectl delete manually to finish the cleanup.
+> [!NOTE]  
+> The `problemPatterns.namespace` will be left regardless. It is used by many of our charts, so we will not delete it.\
+> Please remove it manually when you are sure it's not needed anymore. 
 ```shell
 helm uninstall frequent-restarts --namespace frequent-restarts
 kubectl delete namespace frequent-restarts

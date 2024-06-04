@@ -34,10 +34,10 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: frequent-restarts
-    namespace: {{ .Values.alternativeNamespace }}
+    namespace: {{ .Values.problemPatterns.namespace }}
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: frequent-restarts
-  namespace: {{ .Values.alternativeNamespace }}
+  namespace: {{ .Values.problemPatterns.namespace }}
