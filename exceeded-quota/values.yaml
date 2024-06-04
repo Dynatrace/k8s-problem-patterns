@@ -1,1 +1,2 @@
-alternativeNamespace: problem-patterns
+problemPatterns:
+  namespace: problem-patterns
