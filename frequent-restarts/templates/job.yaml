@@ -2,9 +2,9 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: frequent-restarts-kill-nginx
-  namespace: {{ .Values.problemPatterns.namespace }}
+  namespace: {{ .Values.faultInjection.namespace }}
 spec:
-  schedule: {{ .Values.problemPatterns.schedule }}
+  schedule: {{ .Values.faultInjection.schedule.killProcess }}
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
