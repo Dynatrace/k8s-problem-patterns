@@ -37,7 +37,6 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
-        restartPolicy: Always
         readinessProbe:
           exec:
             command:
