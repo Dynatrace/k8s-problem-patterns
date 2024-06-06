@@ -1,46 +1,22 @@
 # k8s-problem-patterns
+[![GitHub license](https://img.shields.io/github/license/kubernetes/ingress-nginx.svg)](https://github.com/Dynatrace/k8s-problem-patterns/blob/main/LICENSE)
+![GitHub contribution](https://img.shields.io/badge/contributions-welcome-orange.svg)
 
-## Exceed-quota pattern
-### Deploy pattern (workload will be deployed to exceeded-quota namespace, supporting resources by default to problem-patterns namespace)
-```
-helm upgrade exceeded-quota ./exceeded-quota --install --namespace <workload_namespace> --create-namespace
-```
-### Deploy pattern (set namespace where supporting resources will be deployed)
-```
-helm upgrade exceeded-quota ./exceeded-quota --install --namespace <workload_namespace> --create-namespace --set alternativeNamespace=<problem_patterns_namespace>
-```
+> [!WARNING]
+> The deployments provided here are **purposely malfunctioning**.\
+> They should not be used productively and are meant to be used for demos.
 
-## Terminating Pod pattern
-This pattern starts a simple nginx Workload with a non-existant finalizer. The default number of replicas is 3
-The deployment is immedieatly scaled down to 2 replicas. This way one pod get's stuck in terminating pod state.
+We required a reliable way to create unhealthy states in our clusters to showcase [Dynatrace](https://www.dynatrace.com)'s monitoring capabilities.\
+Feedback and contributions are welcome.
 
-There are three additional CronJobs that reset the pattern by 
-- removing the finalizer from the pending pod
-- scaling the up deployment to 3 replicas
-- scaling the down the deployment to 2 replicas.
+| Problem Pattern                            | Description                                                                               |
+|--------------------------------------------|-------------------------------------------------------------------------------------------|
+| [exceeded-quota](exceeded-quota/README.md) | a deployment that violates a specified resource quota when scaled up                      |
+| [frequent-restarts](frequent-restarts/README.md)                         | periodic restart of a ingress-nginx pod                                                   |
+| [node-pressure](node-pressure/README.md)                             | allocate RAM on a specified node using stress-ng until the system is out-of-memory |
+| [pending-pod](pending-pod/README.md)                               | pods in pending state due to insufficient resources            |
+| [pvc-out-of-space](pvc-out-of-space/README.md)                          | container registry that will be filled up over time to exceed the limit on the pvc        |
+| [terminating-pod](terminating-pod/README.md)                           | pod in terminating state due to a misconfigured finalizer                                 |
 
-### Usage
-This example creates the workload (nginx deployment) in the terminating-pod namespace and the other resources like jobs and serviceaccount in the problem-patterns namespace.
-```
-helm upgrade terminating-pod ./terminating-pod --install --namespace terminating-pod --create-namespace --set alternativeNamespace=problem-patterns
-```
-
-## PVC out of space pattern
-This pattern uses a vendor neutral OCI registry called zotregistry (a CNCF sandbox project). Zotregistry is simple, but powerful enough to support production-ready features like permissions and automatic garbage collection. A cronjob pushes a large image using Kaniko at regular intervals, and another cronjob clears these images once a day at 23:45 UTC.
-
-### Deploy pattern, namespace for workloads can be selected and supporting resources like cronjobs will be in the problem-patterns namespace.
-```
-helm upgrade pvc-out-of-space ./pvc-out-of-space \
-  --install \
-  --namespace <target namespace for zot workload> \
-  --create-namespace
-```
-### Deploy pattern with custom problem patterns namespace and a 5G pvc
-```
-helm upgrade pvc-out-of-space ./pvc-out-of-space \
-  --install \
-  --namespace <target namespace for zot workload> \
-  --set alternativeNamespace=<problem-patterns-ns> \
-  --set zot.pvc.storage=5G \
-  --create-namespace
-```
+New problem-patterns will be added over time and we plan to improve and adjust all of them in the near future.\
+Feel free to share ideas with us!

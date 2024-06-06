@@ -21,3 +21,6 @@
 .idea/
 *.tmproj
 .vscode/
+# Ignore dependencies
+**/charts/
+**/requirements.lock
