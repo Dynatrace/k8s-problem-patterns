@@ -1,5 +1,4 @@
 {{- if not (lookup "v1" "Namespace" "" .Values.faultInjection.namespace ) }}
----
 apiVersion: v1
 kind: Namespace
 metadata:

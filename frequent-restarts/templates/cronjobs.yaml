@@ -7,7 +7,7 @@ spec:
   concurrencyPolicy: Forbid
   failedJobsHistoryLimit: 5
   successfulJobsHistoryLimit: 5
-  schedule: {{ .Values.faultInjection.schedule.killProcess }}
+  schedule: {{ .Values.faultInjection.schedule.killProcess | quote }}
   jobTemplate:
     spec:
       template:

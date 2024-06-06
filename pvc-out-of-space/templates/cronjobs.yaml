@@ -6,7 +6,7 @@ metadata:
 spec:
   failedJobsHistoryLimit: 5
   successfulJobsHistoryLimit: 5
-  schedule: {{ .Values.faultInjection.schedule.bigImagePush }}
+  schedule: {{ .Values.faultInjection.schedule.bigImagePush | quote }}
   jobTemplate:
     spec:
       backoffLimit: 1
@@ -58,7 +58,7 @@ metadata:
 spec:
   failedJobsHistoryLimit: 5
   successfulJobsHistoryLimit: 5
-  schedule: {{ .Values.faultInjection.schedule.deleteTags }}
+  schedule: {{ .Values.faultInjection.schedule.deleteTags | quote }}
   jobTemplate:
     spec:
       backoffLimit: 1

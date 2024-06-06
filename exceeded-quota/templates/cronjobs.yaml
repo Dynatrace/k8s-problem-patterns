@@ -6,7 +6,7 @@ metadata:
 spec:
   failedJobsHistoryLimit: 5
   successfulJobsHistoryLimit: 5
-  schedule: '0 2 * * *'
+  schedule: {{ .Values.faultInjection.schedule.scaleUpTo3 | quote }}
   jobTemplate:
     spec:
       template:
@@ -32,7 +32,7 @@ metadata:
 spec:
   failedJobsHistoryLimit: 5
   successfulJobsHistoryLimit: 5
-  schedule: '15 5 * * *'
+  schedule: {{ .Values.faultInjection.schedule.scaleUpTo4 | quote }}
   jobTemplate:
     spec:
       template:
@@ -58,7 +58,7 @@ metadata:
 spec:
   failedJobsHistoryLimit: 5
   successfulJobsHistoryLimit: 5
-  schedule: '30 5 * * *'
+  schedule: {{ .Values.faultInjection.schedule.scaleDown | quote }}
   jobTemplate:
     spec:
       template:
