@@ -1,69 +1,66 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: terminating-pod-demo-scale-out
-  namespace: {{ .Values.alternativeNamespace }}
+  name: terminating-pod-scale-up
+  namespace: {{ .Values.faultInjection.namespace }}
 spec:
-  schedule: '10 20 * * *'
+  schedule: {{ .Values.faultInjection.schedule.scaleUp }}
   jobTemplate:
     spec:
       template:
         spec:
-          restartPolicy: OnFailure
-          serviceAccountName: terminating-pod-demo
           containers:
-          - name: scale-out
-            image: rancher/kubectl:v1.23.7
-            args:
-              - scale
-              - deployment
-              - nginx-deployment
-              - --namespace={{ .Release.Namespace }}
-              - --replicas=3
+            - name: scale-up
+              image: bitnami/kubectl:latest
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  kubectl scale deployment webserver-deployment --namespace {{ .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.max }}
+          restartPolicy: OnFailure
+          serviceAccountName: terminating-pod
 
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: terminating-pod-demo-scale-in
-  namespace: {{ .Values.alternativeNamespace }}
+  name: terminating-pod-scale-down
+  namespace: {{ .Values.faultInjection.namespace }}
 spec:
-  schedule: '20 20 * * *'
+  schedule: {{ .Values.faultInjection.schedule.scaleDown }}
   jobTemplate:
     spec:
       template:
         spec:
-          restartPolicy: OnFailure
-          serviceAccountName: terminating-pod-demo
           containers:
-          - name: scale-in
-            image: rancher/kubectl:v1.23.7
-            args:
-              - scale
-              - deployment
-              - nginx-deployment
-              - --namespace={{ .Release.Namespace }}
-              - --replicas=2
-
+            - name: scale-down
+              image: bitnami/kubectl:latest
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  kubectl scale deployment webserver-deployment --namespace {{ .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.min }}
+          restartPolicy: OnFailure
+          serviceAccountName: terminating-pod
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: terminating-pod-demo-patch
-  namespace: {{ .Values.alternativeNamespace }}
+  name: terminating-pod-patch
+  namespace: {{ .Values.faultInjection.namespace }}
 spec:
-  schedule: '0 20 * * *'
+  schedule: {{ .Values.faultInjection.schedule.patch }}
   jobTemplate:
     spec:
       template:
         spec:
           restartPolicy: OnFailure
-          serviceAccountName: terminating-pod-demo
+          serviceAccountName: terminating-pod
           containers:
             - name: patch
               image: bitnami/kubectl:1.23.7
               command:
                 - sh
                 - -c
-              args:
-                - "kubectl patch pods --namespace={{ .Release.Namespace }} --type json --patch='[{\"op\":\"remove\",\"path\":\"/metadata/finalizers\"}]' $(kubectl get pods --namespace={{ .Release.Namespace }} -l 'problemPattern=terminating-pod' -o=jsonpath='{.items[?(@.metadata.deletionTimestamp)].metadata.name}')"
+                - |
+                  kubectl get pods --namespace={{ .Release.Namespace }} -l demo=terminating-pod -o=jsonpath='{.items[?(@.metadata.deletionTimestamp)].metadata.name}' | xargs -I {} kubectl patch pod {} --namespace={{ .Release.Namespace }} --type=json -p='[{"op": "remove", "path": "/metadata/finalizers"}]'

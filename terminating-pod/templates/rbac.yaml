@@ -1,14 +1,7 @@
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: terminating-pod-demo
-  namespace: {{ .Values.alternativeNamespace }}
-
----
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: terminating-pod-demo-role
+  name: terminating-pod
 rules:
 - apiGroups:
   - "apps"
@@ -32,17 +25,22 @@ rules:
   - list
   - get
   - patch
-
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: terminating-pod-demo-role-binding
+  name: terminating-pod
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: terminating-pod-demo-role
+  name: terminating-pod
 subjects:
 - kind: ServiceAccount
-  name: terminating-pod-demo
-  namespace: {{ .Values.alternativeNamespace }}
+  name: terminating-pod
+  namespace: {{ .Values.faultInjection.namespace }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: terminating-pod
+  namespace: {{ .Values.faultInjection.namespace }}
