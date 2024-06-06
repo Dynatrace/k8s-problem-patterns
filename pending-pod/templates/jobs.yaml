@@ -1,10 +1,10 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ .Release.Name }}-requests-scale-up
-  namespace: {{ .Values.alternativeNamespace }}
+  name: {{ .Values.busybox.nameOverride }}-scale-up
+  namespace: {{ .Values.faultInjection.namespace }}
 spec:
-  schedule: "0 0,8,16 * * *" # Daily @ 00:00, 08:00 & 16:00
+  schedule: {{ .Values.faultInjection.schedule.scaleUp }}
   jobTemplate:
     spec:
       template:
@@ -16,17 +16,17 @@ spec:
                 - /bin/sh
                 - -c
                 - |
-                  kubectl scale deployment {{ .Release.Name }}-requests --namespace {{ .Release.Namespace }} --replicas={{ .Values.demoRequests.replicas.max }}
+                  kubectl scale deployment {{ .Values.busybox.nameOverride }} --namespace {{ .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.max }}
           restartPolicy: OnFailure
           serviceAccountName: pending-pod
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ .Release.Name }}-requests-scale-down
-  namespace: {{ .Values.alternativeNamespace }}
+  name: {{ .Values.busybox.nameOverride }}-scale-down
+  namespace: {{ .Values.faultInjection.namespace }}
 spec:
-  schedule: "0 4,12,20 * * *" # Daily @ 04:00, 12:00 & 20:00
+  schedule: {{ .Values.faultInjection.schedule.scaleDown }}
   jobTemplate:
     spec:
       template:
@@ -38,50 +38,6 @@ spec:
                 - /bin/sh
                 - -c
                 - |
-                  kubectl scale deployment {{ .Release.Name }}-requests --namespace {{ .Release.Namespace }} --replicas={{ .Values.demoRequests.replicas.min }}
-          restartPolicy: OnFailure
-          serviceAccountName: pending-pod
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: {{ .Release.Name }}-tolerations-scale-up
-  namespace: {{ .Values.alternativeNamespace }}
-spec:
-  schedule: "0 1,9,17 * * *" # Daily @ 01:00, 09:00 & 17:00
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          containers:
-            - name: scale-up
-              image: bitnami/kubectl:latest
-              command:
-                - /bin/sh
-                - -c
-                - |
-                  kubectl scale deployment {{ .Release.Name }}-tolerations --namespace {{ .Release.Namespace }} --replicas={{ .Values.demoTolerations.replicas.max }}
-          restartPolicy: OnFailure
-          serviceAccountName: pending-pod
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: {{ .Release.Name }}-tolerations-scale-down
-  namespace: {{ .Values.alternativeNamespace }}
-spec:
-  schedule: "0 5,13,21 * * *" # Daily @ 05:00, 13:00 & 21:00
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          containers:
-            - name: scale-down
-              image: bitnami/kubectl:latest
-              command:
-                - /bin/sh
-                - -c
-                - |
-                  kubectl scale deployment {{ .Release.Name }}-tolerations --namespace {{ .Release.Namespace }} --replicas={{ .Values.demoTolerations.replicas.min }}
+                  kubectl scale deployment {{ .Values.busybox.nameOverride }} --namespace {{ .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.min }}
           restartPolicy: OnFailure
           serviceAccountName: pending-pod

@@ -25,7 +25,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: pending-pod
-    namespace: {{ .Values.alternativeNamespace }}
+    namespace: {{ .Values.faultInjection.namespace }}
 roleRef:
   kind: ClusterRole
   name: pending-pod
@@ -35,4 +35,4 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: pending-pod
-  namespace: {{ .Values.alternativeNamespace }}
+  namespace: {{ .Values.faultInjection.namespace }}
