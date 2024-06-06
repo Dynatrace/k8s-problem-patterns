@@ -1,1 +1,3 @@
-nodeSelector: {}
+faultInjection:
+  nodeSelector:
+    demo: node-pressure

@@ -3,9 +3,12 @@ kind: ClusterRole
 metadata:
   name: node-pressure
 rules:
-- apiGroups: [""]
-  resources: ["nodes"]
-  verbs: ["get"]
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  verbs:
+  - get
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
