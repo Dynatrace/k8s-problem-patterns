@@ -28,7 +28,7 @@ helm upgrade --install --dependency-update frequent-restarts ./frequent-restarts
 ## Removal
 Helm uninstall will get rid of everything but the namespaces. Thus we need to issue a kubectl delete manually to finish the cleanup.
 > [!NOTE]  
-> The `problemPatterns.namespace` will be left regardless. It is used by many of our charts, so we will not delete it.\
+> The `faultInjection.namespace` will be left regardless. It is used by many of our charts, so we will not delete it.\
 > Please remove it manually when you are sure it's not needed anymore. 
 ```shell
 helm uninstall frequent-restarts --namespace frequent-restarts

@@ -1,8 +1,8 @@
-{{- if not (lookup "v1" "Namespace" "" .Values.problemPatterns.namespace ) }}
+{{- if not (lookup "v1" "Namespace" "" .Values.faultInjection.namespace ) }}
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: {{ .Values.problemPatterns.namespace }}
+  name: {{ .Values.faultInjection.namespace }}
   annotations:
     helm.sh/resource-policy: keep
 {{- end }}
