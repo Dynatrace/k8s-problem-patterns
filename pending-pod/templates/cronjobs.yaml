@@ -4,6 +4,8 @@ metadata:
   name: {{ .Values.busybox.nameOverride }}-scale-up
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
   schedule: {{ .Values.faultInjection.schedule.scaleUp }}
   jobTemplate:
     spec:
@@ -26,6 +28,8 @@ metadata:
   name: {{ .Values.busybox.nameOverride }}-scale-down
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
   schedule: {{ .Values.faultInjection.schedule.scaleDown }}
   jobTemplate:
     spec:

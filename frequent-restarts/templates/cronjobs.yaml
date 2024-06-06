@@ -4,8 +4,10 @@ metadata:
   name: frequent-restarts-kill-nginx
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
-  schedule: {{ .Values.faultInjection.schedule.killProcess }}
   concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
+  schedule: {{ .Values.faultInjection.schedule.killProcess }}
   jobTemplate:
     spec:
       template:

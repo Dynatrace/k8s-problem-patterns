@@ -4,6 +4,8 @@ metadata:
   name: terminating-pod-scale-up
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
   schedule: {{ .Values.faultInjection.schedule.scaleUp }}
   jobTemplate:
     spec:
@@ -27,6 +29,8 @@ metadata:
   name: terminating-pod-scale-down
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
   schedule: {{ .Values.faultInjection.schedule.scaleDown }}
   jobTemplate:
     spec:
@@ -49,6 +53,8 @@ metadata:
   name: terminating-pod-patch
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
   schedule: {{ .Values.faultInjection.schedule.patch }}
   jobTemplate:
     spec:

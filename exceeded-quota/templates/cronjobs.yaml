@@ -4,6 +4,8 @@ metadata:
   name: exceeded-quota-scale-up-3
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
   schedule: '0 2 * * *'
   jobTemplate:
     spec:
@@ -28,6 +30,8 @@ metadata:
   name: exceeded-quota-scale-up-4
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
   schedule: '15 5 * * *'
   jobTemplate:
     spec:
@@ -52,6 +56,8 @@ metadata:
   name: exceeded-quota-scale-down
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
   schedule: '30 5 * * *'
   jobTemplate:
     spec:

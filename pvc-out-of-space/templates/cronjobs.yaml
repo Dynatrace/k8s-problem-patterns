@@ -4,6 +4,8 @@ metadata:
   name: kaniko-big-image-push
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
   schedule: {{ .Values.faultInjection.schedule.bigImagePush }}
   jobTemplate:
     spec:
@@ -54,6 +56,8 @@ metadata:
   name: delete-tags
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
   schedule: {{ .Values.faultInjection.schedule.deleteTags }}
   jobTemplate:
     spec:
