@@ -1,7 +1,9 @@
-apiVersion: v1
-name: pvc-out-of-space
-version: "1.0.0"
+apiVersion: v2
 dependencies:
-- name: zot
-  version: "0.1.54"
-  repository: "http://zotregistry.dev/helm-charts"
+  - name: zot
+    version: "0.1.54"
+    repository: "http://zotregistry.dev/helm-charts"
+description: container registry that will be filled up over time to exceed the limit on the pvc
+name: pvc-out-of-space
+type: application
+version: "1.1.0"
