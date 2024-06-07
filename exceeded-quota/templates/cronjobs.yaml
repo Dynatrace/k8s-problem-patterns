@@ -1,23 +1,25 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: exceeded-quota-demo-scale-out-3
-  namespace: {{ .Values.alternativeNamespace }}
+  name: exceeded-quota-scale-up-3
+  namespace: {{ .Values.faultInjection.namespace }}
 spec:
-  schedule: '0 2 * * *'
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
+  schedule: {{ .Values.faultInjection.schedule.scaleUpTo3 | quote }}
   jobTemplate:
     spec:
       template:
         spec:
           restartPolicy: OnFailure
-          serviceAccountName: exceeded-quota-demo
+          serviceAccountName: exceeded-quota
           containers:
-          - name: scale-out
+          - name: scale-up
             image: bitnami/kubectl:latest
             args:
               - scale
               - deployment
-              - exceeded-quota-demo
+              - exceeded-quota
               - --replicas=3
               - --namespace={{ .Release.Namespace }}
 
@@ -25,23 +27,25 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: exceeded-quota-demo-scale-out-4
-  namespace: {{ .Values.alternativeNamespace }}
+  name: exceeded-quota-scale-up-4
+  namespace: {{ .Values.faultInjection.namespace }}
 spec:
-  schedule: '15 5 * * *'
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
+  schedule: {{ .Values.faultInjection.schedule.scaleUpTo4 | quote }}
   jobTemplate:
     spec:
       template:
         spec:
           restartPolicy: OnFailure
-          serviceAccountName: exceeded-quota-demo
+          serviceAccountName: exceeded-quota
           containers:
-          - name: scale-out
+          - name: scale-up
             image: bitnami/kubectl:latest
             args:
               - scale
               - deployment
-              - exceeded-quota-demo
+              - exceeded-quota
               - --replicas=4
               - --namespace={{ .Release.Namespace }}
 
@@ -49,22 +53,24 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: exceeded-quota-demo-scale-in
-  namespace: {{ .Values.alternativeNamespace }}
+  name: exceeded-quota-scale-down
+  namespace: {{ .Values.faultInjection.namespace }}
 spec:
-  schedule: '30 5 * * *'
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
+  schedule: {{ .Values.faultInjection.schedule.scaleDown | quote }}
   jobTemplate:
     spec:
       template:
         spec:
           restartPolicy: OnFailure
-          serviceAccountName: exceeded-quota-demo
+          serviceAccountName: exceeded-quota
           containers:
-          - name: scale-in
+          - name: scale-down
             image: bitnami/kubectl:latest
             args:
               - scale
               - deployment
-              - exceeded-quota-demo
+              - exceeded-quota
               - --replicas=2
               - --namespace={{ .Release.Namespace }}

@@ -2,10 +2,12 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: frequent-restarts-kill-nginx
-  namespace: {{ .Values.alternativeNamespace }}
+  namespace: {{ .Values.faultInjection.namespace }}
 spec:
-  schedule: 0,1,2 10 * * *
   concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
+  schedule: {{ .Values.faultInjection.schedule.killProcess | quote }}
   jobTemplate:
     spec:
       template:

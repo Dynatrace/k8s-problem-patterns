@@ -1,2 +1,4 @@
-# namespace where the cron-jobs will be deployed
-alternativeNamespace: problem-patterns
+faultInjection:
+  namespace: problem-patterns
+  schedule:
+    killProcess: "0,1,2 10 * * *"

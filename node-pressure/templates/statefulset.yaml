@@ -5,17 +5,19 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: node-pressure
+      demo: node-pressure
   replicas: 1
   template:
     metadata:
       labels:
-        app: node-pressure
+        demo: node-pressure
       annotations:
         oneagent.dynatrace.com/inject: "false"
     spec:
+{{- if .Values.faultInjection.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.nodeSelector | indent 8 }}
+{{ toYaml .Values.faultInjection.nodeSelector | indent 8 }}
+{{- end }}
       serviceAccountName: node-pressure
       volumes:
       - name: script
@@ -35,7 +37,6 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
-        restartPolicy: Always
         readinessProbe:
           exec:
             command:

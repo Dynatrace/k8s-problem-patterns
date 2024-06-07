@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Values.busybox.nameOverride }}-scale-up
+  namespace: {{ .Values.faultInjection.namespace }}
+spec:
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
+  schedule: {{ .Values.faultInjection.schedule.scaleUp | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: scale-up
+              image: bitnami/kubectl:latest
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  kubectl scale deployment {{ .Values.busybox.nameOverride }} --namespace {{ .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.max }}
+          restartPolicy: OnFailure
+          serviceAccountName: pending-pod
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Values.busybox.nameOverride }}-scale-down
+  namespace: {{ .Values.faultInjection.namespace }}
+spec:
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
+  schedule: {{ .Values.faultInjection.schedule.scaleDown | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: scale-down
+              image: bitnami/kubectl:latest
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  kubectl scale deployment {{ .Values.busybox.nameOverride }} --namespace {{ .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.min }}
+          restartPolicy: OnFailure
+          serviceAccountName: pending-pod

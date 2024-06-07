@@ -1,63 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-requests
+  name: {{ .Values.busybox.nameOverride }}
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: {{ .Values.demoRequests.replicas.min }}
+  replicas: {{ .Values.faultInjection.replicas.min }}
   selector:
     matchLabels:
-      app: {{ .Release.Name }}-requests
+      demo: pending-pod
   template:
     metadata:
       annotations:
         oneagent.dynatrace.com/inject: "false"
       labels:
-        app: {{ .Release.Name }}-requests
+        demo: pending-pod
     spec:
       containers:
-        - name: {{ .Release.Name }}-requests
+        - name: {{ .Values.busybox.nameOverride }}
           image: busybox
           command: ["sh", "-c", "sleep infinity"]
           resources:
-{{ toYaml .Values.resources | indent 12 }}
-{{- if .Values.nodeSelector }}
+{{ toYaml .Values.busybox.resources | indent 12 }}
+{{- if .Values.faultInjection.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.nodeSelector | indent 8 }}
+{{ toYaml .Values.faultInjection.nodeSelector | indent 8 }}
 {{- end }}
       tolerations:
         - effect: NoSchedule
           key: demo
           operator: Equal
           value: pending-pod
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: {{ .Release.Name }}-tolerations
-  namespace: {{ .Release.Namespace }}
-spec:
-  replicas: {{ .Values.demoTolerations.replicas.min }}
-  selector:
-    matchLabels:
-      app: {{ .Release.Name }}-tolerations
-  template:
-    metadata:
-      annotations:
-        oneagent.dynatrace.com/inject: "false"
-      labels:
-        app: {{ .Release.Name }}-tolerations
-    spec:
-      containers:
-        - name: {{ .Release.Name }}-tolerations
-          image: busybox
-          command: ["sh", "-c", "sleep infinity"]
-{{- if .Values.nodeSelector }}
-      nodeSelector:
-{{ toYaml .Values.nodeSelector | indent 8 }}
-{{- end }}
-      tolerations:
-        - effect: NoSchedule
-          key: some-non-existent-key
-          operator: Equal
-          value: foobar

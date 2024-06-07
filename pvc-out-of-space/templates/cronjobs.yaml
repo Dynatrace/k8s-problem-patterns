@@ -2,9 +2,11 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: kaniko-big-image-push
-  namespace: {{ .Values.alternativeNamespace }}
+  namespace: {{ .Values.faultInjection.namespace }}
 spec:
-  schedule: '*/15 * * * *' # every 15th minute
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
+  schedule: {{ .Values.faultInjection.schedule.bigImagePush | quote }}
   jobTemplate:
     spec:
       backoffLimit: 1
@@ -52,9 +54,11 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: delete-tags
-  namespace: {{ .Values.alternativeNamespace }}
+  namespace: {{ .Values.faultInjection.namespace }}
 spec:
-  schedule: '45 23 * * *' # 23:45 each day
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
+  schedule: {{ .Values.faultInjection.schedule.deleteTags | quote }}
   jobTemplate:
     spec:
       backoffLimit: 1

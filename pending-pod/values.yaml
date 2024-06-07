@@ -1,25 +1,20 @@
-demoTolerations:
-  replicas:
-    max: 1
-    min: 0
+busybox:
+  nameOverride: mail-service
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "450m"
+    limits:
+      memory: "128Mi"
+      cpu: "450m"
 
-demoRequests:
+faultInjection:
+  namespace: problem-patterns
+  nodeSelector:
+    demo: pending-pod
   replicas:
     max: 5
     min: 4
-
-# namespace where the cron-jobs will be deployed
-alternativeNamespace: problem-patterns
-
-# nodeSelector is completely optional, remove it if not needed
-nodeSelector:
-  demo: pending-pod
-
-# resources for all deployments
-resources:
-  requests:
-    memory: "128Mi"
-    cpu: "450m"
-  limits:
-    memory: "128Mi"
-    cpu: "450m"
+  schedule:
+    scaleUp: "0 0,8,16 * * *" # Daily @ 00:00, 08:00 & 16:00
+    scaleDown: "0 4,12,20 * * *" # Daily @ 04:00, 12:00 & 20:00

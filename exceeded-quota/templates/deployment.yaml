@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: exceeded-quota-demo
+  name: exceeded-quota
   namespace: {{ .Release.Namespace }}
 spec:
   selector:

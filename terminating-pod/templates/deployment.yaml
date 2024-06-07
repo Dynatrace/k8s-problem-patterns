@@ -1,26 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
+  name: webserver-deployment
   namespace: {{ .Release.Namespace }}
   labels:
-    app: nginx
+    demo: terminating-pod
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.faultInjection.replicas.max }}
   selector:
     matchLabels:
-      app: nginx
+      demo: terminating-pod
   template:
     metadata:
-      {{- with .Values.podLabels }}
-      labels: 
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+      labels:
+        app: nginx
+        demo: terminating-pod
       finalizers:
       - finalizer.extensions/v1beta1
     spec:
       containers:
-      - name: nginx
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+      - name: webserver
+        image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag }}"
         ports:
         - containerPort: 80

@@ -1,20 +1,22 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: initial-scale-in
-  namespace: {{ .Values.alternativeNamespace }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "-5"
+  name: initial-scale-down
+  namespace: {{ .Values.faultInjection.namespace }}
 spec:
+  backoffLimit: 4
   template:
     spec:
-      serviceAccountName: terminating-pod-demo
+      serviceAccountName: terminating-pod
       containers:
-      - name: scale-in
-        image: rancher/kubectl:v1.23.7
-        args:
-          - scale
-          - deployment
-          - nginx-deployment
-          - --namespace={{ .Release.Namespace }}
-          - --replicas=2
+        - name: scale-down
+          image: bitnami/kubectl:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              kubectl scale deployment webserver-deployment --namespace {{ .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.min }}
       restartPolicy: OnFailure
-  backoffLimit: 4

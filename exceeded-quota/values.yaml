@@ -1,1 +1,6 @@
-alternativeNamespace: problem-patterns
+faultInjection:
+  namespace: problem-patterns
+  schedule:
+    scaleDown: "30 5 * * *"
+    scaleUpTo3: "0 2 * * *"
+    scaleUpTo4: "15 5 * * *"
