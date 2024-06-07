@@ -4,7 +4,7 @@
 
 > [!WARNING]
 > The deployments provided here are **purposely malfunctioning**.\
-> They should not be used productively and are meant to be used for demos.
+> They should not be used in production and are meant to be used for demos.
 
 We required a reliable way to create unhealthy states in our clusters to showcase [Dynatrace](https://www.dynatrace.com)'s monitoring capabilities.\
 Feedback and contributions are welcome.
