@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: exceeded-quota
+  name: {{ .Values.faultInjection.nameOverride }}
   namespace: {{ .Release.Namespace }}
 spec:
   selector:
@@ -14,8 +14,8 @@ spec:
         demo: exceeded-quota
     spec:
       containers:
-      - name: tomcat
-        image: tomcat
-        resources:
-          requests:
-            memory: 100Mi
+        - name: {{ .Values.faultInjection.nameOverride }}
+          image: busybox
+          command: [ "sh", "-c", "sleep infinity" ]
+          resources:
+{{ toYaml .Values.busybox.resources | indent 12 }}

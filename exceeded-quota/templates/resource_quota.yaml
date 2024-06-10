@@ -1,8 +1,11 @@
 apiVersion: v1
 kind: ResourceQuota
 metadata:
-  name: exceeded-quota
+  name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
 spec:
   hard:
-    requests.memory: 310Mi
+    limits.cpu: 310m
+    limits.memory: 1Gi
+    requests.cpu: 310m
+    requests.memory: 1Gi

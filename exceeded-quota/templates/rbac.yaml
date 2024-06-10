@@ -15,7 +15,7 @@ rules:
   resources:
   - deployments/scale
   resourceNames:
-  - exceeded-quota
+  - {{ .Values.faultInjection.nameOverride }}
   verbs:
   - patch
 ---

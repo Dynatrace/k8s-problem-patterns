@@ -1,6 +1,16 @@
+busybox:
+  resources:
+    limits:
+      cpu: "100m"
+      memory: "100Mi"
+    requests:
+      cpu: "100m"
+      memory: "100Mi"
+
 faultInjection:
+  nameOverride: events-processor
   namespace: problem-patterns
   schedule:
-    scaleDown: "30 5 * * *"
+    scaleDown: "30 2 * * *"
     scaleUpTo3: "0 2 * * *"
-    scaleUpTo4: "15 5 * * *"
+    scaleUpTo4: "20 2 * * *"
