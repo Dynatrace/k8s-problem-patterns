@@ -1,5 +1,5 @@
 # Problem-Pattern 'pending-pod'
-![ChartVersion](https://img.shields.io/badge/ChartVersion-1.1.0-informational?style=flat)
+![ChartVersion](https://img.shields.io/badge/ChartVersion-1.2.0-informational?style=flat)
 
 ## Overview
 This chart will install a `Deployment` that results in a pending-pod situation by scaling beyond available resources. Requests and limits can be customized in [values.yaml](values.yaml). A `CronJob` takes care of scaling the deployment up and down accordingly.\
@@ -16,7 +16,7 @@ In order to make this a valid demo, you will need to ensure the requests/replica
 
 ### Use-Case
 In this demo we are creating a pending-pod scenario by scaling our workload beyond the node's available resources. The scaling is scheduled to happen 3 times a day with 4 hours in between scale up and scale down.\
-With this we can ensure a re-occuring issue which can be used to potentially raise an alert if the workload is monitored.
+With this we can ensure a re-occurring issue which can be used to potentially raise an alert if the workload is monitored.
 ```shell
 $ kubectl get pods -n pending-pod
 NAME                            READY   STATUS    RESTARTS   AGE

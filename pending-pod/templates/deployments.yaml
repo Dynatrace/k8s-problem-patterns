@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.busybox.nameOverride }}
+  name: {{ .Values.faultInjection.nameOverride }}
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: {{ .Values.faultInjection.replicas.min }}
@@ -16,7 +16,7 @@ spec:
         demo: pending-pod
     spec:
       containers:
-        - name: {{ .Values.busybox.nameOverride }}
+        - name: {{ .Values.faultInjection.nameOverride }}
           image: busybox
           command: ["sh", "-c", "sleep infinity"]
           resources:

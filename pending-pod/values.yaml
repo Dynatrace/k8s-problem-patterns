@@ -1,20 +1,20 @@
 busybox:
-  nameOverride: mail-service
   resources:
-    requests:
-      memory: "128Mi"
-      cpu: "450m"
     limits:
-      memory: "128Mi"
       cpu: "450m"
+      memory: "128Mi"
+    requests:
+      cpu: "450m"
+      memory: "128Mi"
 
 faultInjection:
+  nameOverride: mail-service
   namespace: problem-patterns
   nodeSelector:
     demo: pending-pod
   replicas:
-    max: 5
-    min: 4
+    max: 4
+    min: 3
   schedule:
-    scaleUp: "0 0,8,16 * * *" # Daily @ 00:00, 08:00 & 16:00
-    scaleDown: "0 4,12,20 * * *" # Daily @ 04:00, 12:00 & 20:00
+    scaleUp: "0 14 * * *" # Daily @ 00:00, 08:00 & 16:00
+    scaleDown: "40 14 * * *" # Daily @ 04:00, 12:00 & 20:00

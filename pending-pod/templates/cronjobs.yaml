@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ .Values.busybox.nameOverride }}-scale-up
+  name: {{ .Release.Name }}-scale-up
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
   failedJobsHistoryLimit: 5
@@ -18,14 +18,14 @@ spec:
                 - /bin/sh
                 - -c
                 - |
-                  kubectl scale deployment {{ .Values.busybox.nameOverride }} --namespace {{ .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.max }}
+                  kubectl scale deployment {{ .Values.faultInjection.nameOverride }} --namespace {{ .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.max }}
           restartPolicy: OnFailure
           serviceAccountName: pending-pod
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ .Values.busybox.nameOverride }}-scale-down
+  name: {{ .Release.Name }}-scale-down
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
   failedJobsHistoryLimit: 5
@@ -42,6 +42,6 @@ spec:
                 - /bin/sh
                 - -c
                 - |
-                  kubectl scale deployment {{ .Values.busybox.nameOverride }} --namespace {{ .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.min }}
+                  kubectl scale deployment {{ .Values.faultInjection.nameOverride }} --namespace {{ .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.min }}
           restartPolicy: OnFailure
           serviceAccountName: pending-pod
