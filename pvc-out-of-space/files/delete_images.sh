@@ -8,7 +8,7 @@ chmod 755 regctl
 echo "done"
 
 echo "Listing images..."
-images="$(./regctl tag list "zot.${NAMESPACE}:5000/big-image" --host "user=admin,pass=$REG_PW,reg=zot.${NAMESPACE}:5000,tls=disabled")"
+images="$(./regctl tag list "${REGISTRY}.${NAMESPACE}:5000/big-image" --host "user=admin,pass=$REG_PW,reg=${REGISTRY}.${NAMESPACE}:5000,tls=disabled")"
 echo "$images"
 echo "done"
 
@@ -16,7 +16,7 @@ echo "Deleting images..."
 for image in $images;
 do
   echo "Deleting big-image:${image}..."
-  ./regctl tag delete "zot.${NAMESPACE}:5000/big-image:${image}" --host "user=admin,pass=$REG_PW,reg=zot.${NAMESPACE}:5000,tls=disabled"
+  ./regctl tag delete "${REGISTRY}.${NAMESPACE}:5000/big-image:${image}" --host "user=admin,pass=$REG_PW,reg=${REGISTRY}.${NAMESPACE}:5000,tls=disabled"
   echo "deleted big-image:${image}"
 done
 echo "done deleting images"

@@ -1,11 +1,12 @@
 faultInjection:
+  nameOverride: zot-registry
   namespace: problem-patterns
   schedule:
     bigImagePush: "*/15 * * * *" # every 15th minute
     deleteTags: "45 23 * * *" # 23:45 each day
 
 zot:
-  fullnameOverride: zot
+  fullnameOverride: zot-registry
   service:
     type: ClusterIP
   mountConfig: true

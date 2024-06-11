@@ -1,5 +1,5 @@
 # Problem-Pattern 'pvc-out-of-space'
-![ChartVersion](https://img.shields.io/badge/ChartVersion-1.1.0-informational?style=flat)
+![ChartVersion](https://img.shields.io/badge/ChartVersion-1.2.0-informational?style=flat)
 
 ## Overview
 This chart will deploy `zot` (container registry) in the defined `Namespace`. Using `kaniko` in a `CronJob` we will push an image every 15 minutes until the `PersistentVolume` is full.\
