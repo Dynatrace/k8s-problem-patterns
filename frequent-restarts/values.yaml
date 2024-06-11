@@ -1,4 +1,16 @@
 faultInjection:
+  nameOverride: "ingress-dev"
   namespace: problem-patterns
   schedule:
     killProcess: "0,1,2 10 * * *"
+
+ingress:
+  controller:
+    admissionWebhooks:
+      enabled: false
+    ingressClassResource:
+      name: frequent-restarts-nginx
+      default: false
+    service:
+      enabled: false
+  fullnameOverride: "ingress-dev"

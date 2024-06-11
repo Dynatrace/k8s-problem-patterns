@@ -1,5 +1,5 @@
 # Problem-Pattern 'frequent-restarts'
-![ChartVersion](https://img.shields.io/badge/ChartVersion-1.1.0-informational?style=flat)
+![ChartVersion](https://img.shields.io/badge/ChartVersion-1.2.0-informational?style=flat)
 
 ## Overview
 This chart will deploy `ingress-nginx` in the defined`Namespace`. The controller will be restarted by a `CronJob`.\

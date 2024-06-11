@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webserver-deployment
+  name: {{ .Values.faultInjection.nameOverride }}
   namespace: {{ .Release.Namespace }}
   labels:
-    demo: terminating-pod
+    demo: {{ .Release.Name }}
 spec:
   replicas: {{ .Values.faultInjection.replicas.max }}
   selector:
     matchLabels:
-      demo: terminating-pod
+      demo: {{ .Release.Name }}
   template:
     metadata:
       labels:
         app: nginx
-        demo: terminating-pod
+        demo: {{ .Release.Name }}
       finalizers:
       - finalizer.extensions/v1beta1
     spec:
       containers:
-      - name: webserver
+      - name: {{ .Values.faultInjection.nameOverride }}
         image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag }}"
         ports:
         - containerPort: 80

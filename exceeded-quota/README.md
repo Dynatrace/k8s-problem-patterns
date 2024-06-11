@@ -1,10 +1,10 @@
 # Problem-Pattern 'exceeded-quota'
-![ChartVersion](https://img.shields.io/badge/ChartVersion-1.1.0-informational?style=flat)
+![ChartVersion](https://img.shields.io/badge/ChartVersion-1.2.0-informational?style=flat)
 
 ## Overview
 This chart will impose a `ResourceQuota` in the defined `Namespace`. The deployment will be scaled up using a `CronJob` to exceed the given quota.\
-By default the first scale up (2->3) will happen at 02:00 UTC, the second (3->4 replicas) at 05:15 UTC - this will exceed the `ResourceQuota`. 
-At 05:30 UTC the `Deployment` will be scaled back to 2 replicas.\
+By default the first scale up (2->3) will happen at 02:00 UTC, the second (3->4 replicas) at 02:20 UTC - this will exceed the `ResourceQuota`. 
+At 02:30 UTC the `Deployment` will be scaled back to 2 replicas.\
 These schedules can be adjusted in [cronjobs.yaml](templates/cronjobs.yaml). 
 
 The `CronJob` and its required `ServiceAccount` will be deployed in the default "problem-patterns" `Namespace` (unless updated in the [values.yaml](values.yaml)).\

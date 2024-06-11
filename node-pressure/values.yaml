@@ -1,3 +1,8 @@
 faultInjection:
+  nameOverride: parallel-processing
   nodeSelector:
     demo: node-pressure
+  tolerations:
+  - key: "node.kubernetes.io/memory-pressure"
+    operator: "Exists"
+    effect: "NoSchedule"

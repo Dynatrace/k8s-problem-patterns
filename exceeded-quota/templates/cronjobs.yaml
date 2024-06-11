@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: exceeded-quota-scale-up-3
+  name: {{ .Release.Name }}-scale-up-3
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
   failedJobsHistoryLimit: 5
@@ -19,7 +19,7 @@ spec:
             args:
               - scale
               - deployment
-              - exceeded-quota
+              - {{ .Values.faultInjection.nameOverride }}
               - --replicas=3
               - --namespace={{ .Release.Namespace }}
 
@@ -27,7 +27,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: exceeded-quota-scale-up-4
+  name: {{ .Release.Name }}-scale-up-4
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
   failedJobsHistoryLimit: 5
@@ -45,7 +45,7 @@ spec:
             args:
               - scale
               - deployment
-              - exceeded-quota
+              - {{ .Values.faultInjection.nameOverride }}
               - --replicas=4
               - --namespace={{ .Release.Namespace }}
 
@@ -53,7 +53,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: exceeded-quota-scale-down
+  name: {{ .Release.Name }}-scale-down
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
   failedJobsHistoryLimit: 5
@@ -71,6 +71,6 @@ spec:
             args:
               - scale
               - deployment
-              - exceeded-quota
+              - {{ .Values.faultInjection.nameOverride }}
               - --replicas=2
               - --namespace={{ .Release.Namespace }}

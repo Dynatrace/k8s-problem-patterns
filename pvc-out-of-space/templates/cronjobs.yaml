@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: kaniko-big-image-push
+  name: {{ .Release.Name }}-kaniko-big-image-push
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
   failedJobsHistoryLimit: 5
@@ -22,7 +22,7 @@ spec:
                 - "--skip-tls-verify"
                 - "--build-arg=FILE_SIZE=$(FILE_SIZE)"
                 - "--dockerfile=Containerfile"
-                - "--destination=zot.{{ .Release.Namespace }}:5000/big-image:$(IMAGE_NAME)"
+                - "--destination={{ .Values.faultInjection.nameOverride }}.{{ .Release.Namespace }}:5000/big-image:$(IMAGE_NAME)"
               env:
                 - name: IMAGE_NAME
                   valueFrom:
@@ -53,7 +53,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: delete-tags
+  name: {{ .Release.Name }}-delete-tags
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
   failedJobsHistoryLimit: 5
@@ -76,6 +76,8 @@ spec:
                       key: admin_password
                 - name: NAMESPACE
                   value: {{ .Release.Namespace }}
+                - name: REGISTRY
+                  value: {{ .Values.faultInjection.nameOverride }}
               args:
                 - "sh"
                 - "-c"

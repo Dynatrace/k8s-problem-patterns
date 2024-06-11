@@ -1,12 +1,10 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: terminating-pod-scale-up
+  name: {{ .Release.Name }}-scale-up
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
   failedJobsHistoryLimit: 5
-  successfulJobsHistoryLimit: 5
-  schedule: {{ .Values.faultInjection.schedule.scaleUp | quote }}
   jobTemplate:
     spec:
       template:
@@ -18,20 +16,19 @@ spec:
                 - /bin/sh
                 - -c
                 - |
-                  kubectl scale deployment webserver-deployment --namespace {{ .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.max }}
+                  kubectl scale deployment {{ .Values.faultInjection.nameOverride }} --namespace {{ .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.max }}
           restartPolicy: OnFailure
           serviceAccountName: terminating-pod
-
+  schedule: {{ .Values.faultInjection.schedule.scaleUp | quote }}
+  successfulJobsHistoryLimit: 5
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: terminating-pod-scale-down
+  name: {{ .Release.Name }}-scale-down
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
   failedJobsHistoryLimit: 5
-  successfulJobsHistoryLimit: 5
-  schedule: {{ .Values.faultInjection.schedule.scaleDown | quote }}
   jobTemplate:
     spec:
       template:
@@ -43,25 +40,23 @@ spec:
                 - /bin/sh
                 - -c
                 - |
-                  kubectl scale deployment webserver-deployment --namespace {{ .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.min }}
+                  kubectl scale deployment {{ .Values.faultInjection.nameOverride }} --namespace {{ .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.min }}
           restartPolicy: OnFailure
           serviceAccountName: terminating-pod
+  schedule: {{ .Values.faultInjection.schedule.scaleDown | quote }}
+  successfulJobsHistoryLimit: 5
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: terminating-pod-patch
+  name: {{ .Release.Name }}-patch
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
   failedJobsHistoryLimit: 5
-  successfulJobsHistoryLimit: 5
-  schedule: {{ .Values.faultInjection.schedule.patch | quote }}
   jobTemplate:
     spec:
       template:
         spec:
-          restartPolicy: OnFailure
-          serviceAccountName: terminating-pod
           containers:
             - name: patch
               image: bitnami/kubectl:1.23.7
@@ -69,4 +64,8 @@ spec:
                 - sh
                 - -c
                 - |
-                  kubectl get pods --namespace={{ .Release.Namespace }} -l demo=terminating-pod -o=jsonpath='{.items[?(@.metadata.deletionTimestamp)].metadata.name}' | xargs -I {} kubectl patch pod {} --namespace={{ .Release.Namespace }} --type=json -p='[{"op": "remove", "path": "/metadata/finalizers"}]'
+                  kubectl get pods --namespace={{ .Release.Namespace }} -l demo={{ .Release.Name }} -o=jsonpath='{.items[?(@.metadata.deletionTimestamp)].metadata.name}' | xargs --max-args=1 | xargs -I {} kubectl patch pod {} --namespace={{ .Release.Namespace }} --type=json -p='[{"op": "remove", "path": "/metadata/finalizers"}]'
+          restartPolicy: OnFailure
+          serviceAccountName: terminating-pod
+  schedule: {{ .Values.faultInjection.schedule.patch | quote }}
+  successfulJobsHistoryLimit: 5

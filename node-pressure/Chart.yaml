@@ -2,4 +2,4 @@ apiVersion: v2
 description: allocate RAM on a specified node using stress-ng until the system is out-of-memory
 name: node-pressure
 type: application
-version: 1.1.0
+version: 1.2.0
