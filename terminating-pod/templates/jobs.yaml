@@ -4,13 +4,12 @@ metadata:
   annotations:
     "helm.sh/hook": post-install
     "helm.sh/hook-weight": "-5"
-  name: initial-scale-down
+  name: {{ .Release.Name }}-initial-scale-down
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
   backoffLimit: 4
   template:
     spec:
-      serviceAccountName: terminating-pod
       containers:
         - name: scale-down
           image: bitnami/kubectl:latest
@@ -18,5 +17,6 @@ spec:
             - /bin/sh
             - -c
             - |
-              kubectl scale deployment webserver-deployment --namespace {{ .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.min }}
+              kubectl scale deployment {{ .Values.faultInjection.nameOverride }} --namespace {{ .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.min }}
       restartPolicy: OnFailure
+      serviceAccountName: terminating-pod

@@ -1,5 +1,5 @@
 # Problem-Pattern 'terminating-pod'
-![ChartVersion](https://img.shields.io/badge/ChartVersion-1.1.0-informational?style=flat)
+![ChartVersion](https://img.shields.io/badge/ChartVersion-1.2.0-informational?style=flat)
 
 ## Overview
 This chart will create a simple `Deployment` with a `nginx` workload in the defined `Namespace`. The `Pods` are created with a non-existent finalizer.\
@@ -35,6 +35,6 @@ Furthermore we will need to manually remove the finalizer that causes the termin
 > Please remove it manually when you are sure it's not needed anymore. 
 ```shell
 helm uninstall terminating-pod --namespace terminating-pod
-kubectl get pods -n terminating-pod -l demo=terminating-pod -o jsonpath='{.items[*].metadata.name}' | xargs -n 1 -I {} kubectl patch pod {} -n terminating-pod --type=json -p='[{"op": "remove", "path": "/metadata/finalizers"}]'
+kubectl get pods -n terminating-pod -l demo=terminating-pod -o jsonpath='{.items[*].metadata.name}' | xargs --max-args=1 | xargs -I {} kubectl patch pod {} -n terminating-pod --type=json -p='[{"op": "remove", "path": "/metadata/finalizers"}]'
 kubectl delete namespace terminating-pod
 ```

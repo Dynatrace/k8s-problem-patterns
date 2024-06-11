@@ -1,11 +1,12 @@
 faultInjection:
+  nameOverride: slack-service
   namespace: problem-patterns
   replicas:
     min: 2
     max: 3
   schedule:
-    patch: "0 20 * * *" # daily at 20:00
-    scaleUp: "10 20 * * *" # daily at 20:10
+    patch: "40 20 * * *" # daily at 20:00
+    scaleUp: "0 20 * * *" # daily at 20:10
     scaleDown: "20 20 * * *" # daily at 20:20
 
 nginx:
