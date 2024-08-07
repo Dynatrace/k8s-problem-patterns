@@ -7,4 +7,4 @@ dependencies:
 description: periodic restart of a ingress-nginx pod
 name: frequent-restarts
 type: application
-version: 1.2.0
+version: 1.2.1

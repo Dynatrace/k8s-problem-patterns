@@ -2,19 +2,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.faultInjection.nameOverride }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
   labels:
-    demo: {{ .Release.Name }}
+    demo: {{ .Values.name | default .Release.Name }}
 spec:
   replicas: {{ .Values.faultInjection.replicas.max }}
   selector:
     matchLabels:
-      demo: {{ .Release.Name }}
+      demo: {{ .Values.name | default .Release.Name }}
   template:
     metadata:
       labels:
         app: nginx
-        demo: {{ .Release.Name }}
+        demo: {{ .Values.name | default .Release.Name }}
       finalizers:
       - finalizer.extensions/v1beta1
     spec:

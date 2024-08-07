@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ .Release.Name }}-scale-up
+  name: {{ .Values.name | default .Release.Name }}-scale-up
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
   failedJobsHistoryLimit: 5
@@ -16,7 +16,7 @@ spec:
                 - /bin/sh
                 - -c
                 - |
-                  kubectl scale deployment {{ .Values.faultInjection.nameOverride }} --namespace {{ .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.max }}
+                  kubectl scale deployment {{ .Values.faultInjection.nameOverride }} --namespace {{ .Values.namespace | default .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.max }}
           restartPolicy: OnFailure
           serviceAccountName: terminating-pod
   schedule: {{ .Values.faultInjection.schedule.scaleUp | quote }}
@@ -25,7 +25,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ .Release.Name }}-scale-down
+  name: {{ .Values.name | default .Release.Name }}-scale-down
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
   failedJobsHistoryLimit: 5
@@ -40,7 +40,7 @@ spec:
                 - /bin/sh
                 - -c
                 - |
-                  kubectl scale deployment {{ .Values.faultInjection.nameOverride }} --namespace {{ .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.min }}
+                  kubectl scale deployment {{ .Values.faultInjection.nameOverride }} --namespace {{ .Values.namespace | default .Release.Namespace }} --replicas={{ .Values.faultInjection.replicas.min }}
           restartPolicy: OnFailure
           serviceAccountName: terminating-pod
   schedule: {{ .Values.faultInjection.schedule.scaleDown | quote }}
@@ -49,7 +49,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ .Release.Name }}-patch
+  name: {{ .Values.name | default .Release.Name }}-patch
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
   failedJobsHistoryLimit: 5
@@ -64,7 +64,7 @@ spec:
                 - sh
                 - -c
                 - |
-                  kubectl get pods --namespace={{ .Release.Namespace }} -l demo={{ .Release.Name }} -o=jsonpath='{.items[?(@.metadata.deletionTimestamp)].metadata.name}' | xargs --max-args=1 | xargs -I {} kubectl patch pod {} --namespace={{ .Release.Namespace }} --type=json -p='[{"op": "remove", "path": "/metadata/finalizers"}]'
+                  kubectl get pods --namespace={{ .Values.namespace | default .Release.Namespace }} -l demo={{ .Values.name | default .Release.Name }} -o=jsonpath='{.items[?(@.metadata.deletionTimestamp)].metadata.name}' | xargs --max-args=1 | xargs -I {} kubectl patch pod {} --namespace={{ .Values.namespace | default .Release.Namespace }} --type=json -p='[{"op": "remove", "path": "/metadata/finalizers"}]'
           restartPolicy: OnFailure
           serviceAccountName: terminating-pod
   schedule: {{ .Values.faultInjection.schedule.patch | quote }}

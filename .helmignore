@@ -22,5 +22,5 @@
 *.tmproj
 .vscode/
 # Ignore dependencies
-**/charts/
-**/requirements.lock
+*/charts/
+*/requirements.lock

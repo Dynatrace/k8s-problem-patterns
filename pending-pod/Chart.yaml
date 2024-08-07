@@ -2,4 +2,4 @@ apiVersion: v2
 description: pods in pending state due to insufficient resources
 name: pending-pod
 type: application
-version: 1.2.0
+version: 1.2.1
