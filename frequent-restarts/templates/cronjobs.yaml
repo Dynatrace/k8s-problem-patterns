@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ .Release.Name }}-kill-ingress-nginx
+  name: {{ .Values.name | default .Release.Name }}-kill-ingress-nginx
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
   concurrencyPolicy: Forbid
@@ -21,4 +21,4 @@ spec:
                 - /bin/sh
                 - -c
                 - |
-                  kubectl exec --namespace {{ .Release.Namespace }} deployment/{{ .Values.faultInjection.nameOverride }}-controller -- pkill /nginx-ingress-controller
+                  kubectl exec --namespace {{ .Values.namespace | default .Release.Namespace }} deployment/{{ .Values.faultInjection.nameOverride }}-controller -- pkill /nginx-ingress-controller

@@ -17,7 +17,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: node-pressure
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
 roleRef:
   kind: ClusterRole
   name: node-pressure

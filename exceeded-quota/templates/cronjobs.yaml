@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ .Release.Name }}-scale-up-3
+  name: {{ .Values.name | default .Release.Name }}-scale-up-3
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
   failedJobsHistoryLimit: 5
@@ -21,13 +21,13 @@ spec:
               - deployment
               - {{ .Values.faultInjection.nameOverride }}
               - --replicas=3
-              - --namespace={{ .Release.Namespace }}
+              - --namespace={{ .Values.namespace | default .Release.Namespace }}
 
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ .Release.Name }}-scale-up-4
+  name: {{ .Values.name | default .Release.Name }}-scale-up-4
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
   failedJobsHistoryLimit: 5
@@ -47,13 +47,13 @@ spec:
               - deployment
               - {{ .Values.faultInjection.nameOverride }}
               - --replicas=4
-              - --namespace={{ .Release.Namespace }}
+              - --namespace={{ .Values.namespace | default .Release.Namespace }}
 
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ .Release.Name }}-scale-down
+  name: {{ .Values.name | default .Release.Name }}-scale-down
   namespace: {{ .Values.faultInjection.namespace }}
 spec:
   failedJobsHistoryLimit: 5
@@ -73,4 +73,4 @@ spec:
               - deployment
               - {{ .Values.faultInjection.nameOverride }}
               - --replicas=2
-              - --namespace={{ .Release.Namespace }}
+              - --namespace={{ .Values.namespace | default .Release.Namespace }}
