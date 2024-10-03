@@ -1,7 +1,15 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: script
+  name: script-large
 data:
   script.sh: |-
-{{ .Files.Get "files/script.sh" | indent 4}}
+{{ .Files.Get "files/script-large.sh" | indent 4}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: script-small
+data:
+  script.sh: |-
+{{ .Files.Get "files/script-small.sh" | indent 4}}
