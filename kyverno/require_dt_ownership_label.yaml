@@ -1,0 +1,35 @@
+# Policy for ensuring Dynatrace Ownership on workloads. Read more here: https://www.dynatrace.com/support/help/manage/ownership/assign-ownership#kubernetes
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-dt-ownership
+  annotations:
+    policies.kyverno.io/title: Require Dynatrace Ownership
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Workload, Label
+    policies.kyverno.io/description: >-
+      Ownership of workloads within Dynatrace can be configured using the "dt.owner" label on the workload entity.            
+spec:
+  validationFailureAction: Audit # https://kyverno.io/docs/writing-policies/validate/#validation-failure-action
+  background: true
+  rules:
+  - name: require-dt-ownership
+    match:
+      any:
+      - resources:
+          kinds:
+          - Deployment
+          - StatefulSet
+          - DaemonSet
+          namespaceSelector:
+              matchExpressions:
+                - key: dynatrace.com/ownership-required 
+                  operator: Exists
+    validate:
+      message: "The label `dt.owner` is required. Read more about it here: https://www.dynatrace.com/support/help/manage/ownership/assign-ownership#kubernetes"
+      pattern:
+        metadata:
+          labels:
+            # ToDo: support multip ownership (dt.owner-1:, dt.owner-2:, ...)
+            dt.owner: "?*"

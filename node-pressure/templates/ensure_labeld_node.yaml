@@ -1,0 +1,52 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ensure-marked-node
+  labels:
+    app: ensure-marked-node
+    dt.owner: team-compute
+spec:
+  schedule: "*/5 * * * *"
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 60
+      template:
+        spec:
+          containers:
+          - name: ensure-marked-node
+            image: alpine/k8s:1.31.1
+            command: ['bash', '-c', 'if [ $(kubectl get nodes --selector=demo=node-pressure | wc -l) = 0 ]; then echo "mark a new node"; TARGET=$(kubectl get nodes --no-headers | head -1 | cut -f 1 -d " "); kubectl taint nodes $TARGET memory-pressure-demo:NoExecute --overwrite; kubectl label nodes $TARGET demo=node-pressure --overwrite; fi; kubectl annotate nodes --all dt.owner=K8s_operations;']
+          restartPolicy: Never
+      backoffLimit: 0  
+      parallelism: 1
+      completions: 1
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ensure-marked-node
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ensure-marked-node
+rules:
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["list", "get", "delete", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: ensure-marked-node
+subjects:
+- kind: User
+  name: system:serviceaccount:parallel-processing:default
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: ensure-marked-node
+  apiGroup: rbac.authorization.k8s.io
+---

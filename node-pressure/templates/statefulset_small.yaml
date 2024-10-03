@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.faultInjection.nameOverrideSmall }}
+  annotations:
+    dt.owner: team-compute
+spec:
+  selector:
+    matchLabels:
+      demo: node-pressure
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        demo: node-pressure
+      annotations:
+        oneagent.dynatrace.com/inject: "false"
+        dt.owner: team-compute
+    spec:
+      containers:
+        - name: {{ .Values.faultInjection.nameOverrideSmall }}
+          image: alpine
+          command:
+            - sh
+            - /script/script.sh
+          volumeMounts:
+            - name: script
+              mountPath: /script
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          resources:
+            requests:
+              memory: 10M
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - "ps -ef | grep stress | grep -v grep"
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 20
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - "ps -ef | grep stress | grep -v grep"
+            initialDelaySeconds: 120
+            periodSeconds: 5
+            timeoutSeconds: 20
+{{- if .Values.faultInjection.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.faultInjection.nodeSelector | indent 8 }}
+{{- end }}
+      serviceAccountName: node-pressure
+{{- if .Values.faultInjection.tolerations }}
+      tolerations:
+{{ toYaml .Values.faultInjection.tolerations | indent 6 }}
+{{- end}}
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - name: script
+        configMap:
+          name: script-small
