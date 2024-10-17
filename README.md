@@ -13,6 +13,7 @@ Feedback and contributions are welcome.
 |--------------------------------------------------|------------------------------------------------------------------------------------|
 | [exceeded-quota](exceeded-quota/README.md)       | a deployment that violates a specified resource quota when scaled up               |
 | [frequent-restarts](frequent-restarts/README.md) | periodic restart of a ingress-nginx pod                                            |
+| [kyverno](kyverno/README.md)           | third party (policy) tool emmitting warning signals and prometheus metrics         |
 | [node-pressure](node-pressure/README.md)         | allocate RAM on a specified node using stress-ng until the system is out-of-memory |
 | [pending-pod](pending-pod/README.md)             | pods in pending state due to insufficient resources                                |
 | [pvc-out-of-space](pvc-out-of-space/README.md)   | container registry that will be filled up over time to exceed the limit on the pvc |

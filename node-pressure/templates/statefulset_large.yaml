@@ -1,21 +1,24 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ .Values.faultInjection.nameOverride }}
+  name: {{ .Values.faultInjection.nameOverrideLarge }}
+  annotations:
+    dt.owner: team-compute
 spec:
   selector:
     matchLabels:
       demo: node-pressure
-  replicas: 1
+  replicas: 100
   template:
     metadata:
       labels:
         demo: node-pressure
       annotations:
         oneagent.dynatrace.com/inject: "false"
+        dt.owner: team-compute
     spec:
       containers:
-        - name: {{ .Values.faultInjection.nameOverride }}
+        - name: {{ .Values.faultInjection.nameOverrideLarge }}
           image: alpine
           command:
             - sh
@@ -28,6 +31,11 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
+          resources:
+            requests:
+              memory: 500M
+            limits:
+              memory: 600M
           readinessProbe:
             exec:
               command:
@@ -36,6 +44,7 @@ spec:
                 - "ps -ef | grep stress | grep -v grep"
             initialDelaySeconds: 5
             periodSeconds: 5
+            timeoutSeconds: 20
           livenessProbe:
             exec:
               command:
@@ -44,6 +53,7 @@ spec:
                 - "ps -ef | grep stress | grep -v grep"
             initialDelaySeconds: 120
             periodSeconds: 5
+            timeoutSeconds: 20
 {{- if .Values.faultInjection.nodeSelector }}
       nodeSelector:
 {{ toYaml .Values.faultInjection.nodeSelector | indent 8 }}
@@ -53,7 +63,8 @@ spec:
       tolerations:
 {{ toYaml .Values.faultInjection.tolerations | indent 6 }}
 {{- end}}
+      terminationGracePeriodSeconds: 0
       volumes:
       - name: script
         configMap:
-          name: script
+          name: script-large

@@ -42,7 +42,17 @@ Normal   NodeHasInsufficientMemory  75s (x4 over 26m)  kubelet  Node <DEDUCTED>.
 ## Installation
 Simply run a `helm upgrade` command from the root of this repository:
 ```shell
-helm upgrade --install node-pressure ./node-pressure --namespace node-pressure --create-namespace
+helm upgrade --install node-pressure ./node-pressure --namespace parallel-processing --create-namespace
+```
+If you run dynatrace-fluentbit for log collection, make sure to tolerate the following:
+```
+  tolerations:
+  - key: "node.kubernetes.io/memory-pressure"
+    operator: "Exists"
+    effect: "NoSchedule"
+  - key: "memory-pressure-demo"
+    operator: "Exists"
+    effect: "NoExecute"
 ```
 
 ## Removal
@@ -51,8 +61,8 @@ Helm uninstall will get rid of everything but the namespaces. Thus we need to is
 > The `faultInjection.namespace` will be left regardless. It is used by many of our charts, so we will not delete it.\
 > Please remove it manually when you are sure it's not needed anymore. 
 ```shell
-helm uninstall node-pressure --namespace node-pressure
-kubectl delete namespace node-pressure
+helm uninstall node-pressure --namespace parallel-processing
+kubectl delete namespace parallel-processing
 ```
 
 ## Dependency
