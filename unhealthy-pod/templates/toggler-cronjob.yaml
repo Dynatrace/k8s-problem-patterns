@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "demo-app.fullname" . }}-toggler
+  namespace: {{ include "demo-app.faultInjection.namespace" . }}
+  labels:
+    {{- include "demo-app.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.faultInjection.toggler.cron | quote }}
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: {{ include "demo-app.serviceAccountName" . }}
+          containers:
+          - name: toggle-configmap
+            image: bitnami/kubectl:latest
+            command: ["/bin/bash", "-c", "/scripts/toggle-configmap.sh"]
+            volumeMounts:
+            - name: script-volume
+              mountPath: /scripts
+          restartPolicy: OnFailure
+          volumes:
+          - name: script-volume
+            secret:
+              secretName: {{ include "demo-app.fullname" . }}-toggler-script
+              defaultMode: 0755

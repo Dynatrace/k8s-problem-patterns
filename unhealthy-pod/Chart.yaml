@@ -1,0 +1,6 @@
+apiVersion: v2
+name: unhealthy-pod
+description: Deploys an always unhealthy pod and a related configmap that is regularly updated to a wrong value
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
