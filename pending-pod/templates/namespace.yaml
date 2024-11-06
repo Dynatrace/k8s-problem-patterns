@@ -7,13 +7,13 @@ metadata:
     helm.sh/resource-policy: keep
 {{- end }}
 ---
-{{- $namespace := .Values.namespace | default .Release.namespace }}
+{{- $namespace := .Values.namespace | default .Release.Namespace }}
 {{- if $namespace }}
 {{- $lookupResult := lookup "v1" "Namespace" "" $namespace }}
   {{- if not $lookupResult }}
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: {{ .Values.namespace | default .Release.namespace }}
+  name: {{ .Values.namespace | default .Release.Namespace }}
   {{- end}}
 {{- end }}
