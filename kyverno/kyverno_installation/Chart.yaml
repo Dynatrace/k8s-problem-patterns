@@ -1,0 +1,8 @@
+apiVersion: v2
+name: kyverno-for-problem-patterns
+version: 0.1.0
+type: application
+dependencies:
+  - name: kyverno
+    version: 3.2.7
+    repository: https://kyverno.github.io/kyverno/

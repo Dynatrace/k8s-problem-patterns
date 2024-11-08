@@ -1,0 +1,8 @@
+
+require_ownership_label_pattern:
+  enabled: true
+require_annotations_pattern:
+  enabled: true
+require_requests_pattern:
+  enabled: true
+workload_namespace: finance
