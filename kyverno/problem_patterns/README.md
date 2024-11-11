@@ -1,5 +1,8 @@
 # Kyverno based Problem Patterns
 
+> [!WARNING]
+> These problem patterns require Kyverno, which can be installed with settings to match the problem patterns in the `kyverno_installation` [folder](../kyverno_installation/README.md).
+
 ## Summary
 These Kyverno based problem patterns show how well a third party tool can send signals and integrate with Dynatrace. Kyverno is a common policy management tool for k8s.
 
@@ -10,14 +13,12 @@ This helm chart can be deployed with up to three different Kyverno policies:
 
 A namespace can be defined, which runs a "reporting" workload that violates the enabled policies. The Kyverno metrics workload are scraped for prometheus metrics by annotating them correctly. As a consequence, Kyverno emits warning events for the violating workload, that can be found in the k8s app in the warning signals columns. 
 
-The kyverno problem patterns based in this repo require Kyverno. This folder contains a `values.yaml` file with the correct configuration and annations needed for the problem patters to appear in a Dynatrace tenant.
-
-The most import items configured are:
-* A background scan interval of 5 minutes to ensure we always have a recent event.
-* The correct annotations on the controllers so that the metrics are scraped and ingested into Dynatrace.
-
-## Installation
-Using helm, we can install the latest kyverno release by following these steps:
-* Add the helm repo with `helm repo add kyverno https://kyverno.github.io/kyverno/`
-* Update the repo with `helm repo update``
-* Install Kyverno with `helm install kyverno kyverno/kyverno -n kyverno -f values.yaml --create-namespace --atomic`
+The kyverno problem patterns based in this repo require Kyverno. This folder contains a `values.yaml` file with the correct configuration and annotations needed for the problem patterns to appear in a Dynatrace tenant:
+```
+require_ownership_label_pattern:
+  enabled: true
+require_annotations_pattern:
+  enabled: true
+require_requests_pattern:
+  enabled: true
+```
