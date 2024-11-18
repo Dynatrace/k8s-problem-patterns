@@ -22,3 +22,15 @@ require_annotations_pattern:
 require_requests_pattern:
   enabled: true
 ```
+
+## Installation
+Simply run a `helm upgrade` command from the root of this repository:
+```shell
+helm upgrade --install kyverno-problem-patterns ./kyverno/problem_patterns --namespace problem-patterns --create-namespace
+```
+
+## Removal
+Helm uninstall will remove the resources but leave the namespace. Be careful with deleting that as there might be other problem-patterns depending on it. 
+```shell
+helm uninstall kyverno-problem-patterns --namespace problem-patterns
+```

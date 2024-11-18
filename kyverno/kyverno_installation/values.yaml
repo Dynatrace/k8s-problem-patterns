@@ -1,8 +1,8 @@
-config:  
+config:
   webhooks:
     # Exclude namespaces
-    - namespaceSelector:
-        matchExpressions:
+    namespaceSelector:
+      matchExpressions:
         - key: kubernetes.io/metadata.name
           operator: NotIn
           values:
