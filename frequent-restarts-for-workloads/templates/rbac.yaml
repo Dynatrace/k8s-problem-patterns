@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: frequent-restarts
+  name: frequent-restarts-for-workloads
 rules:
   - apiGroups:
       - ""
@@ -26,18 +26,18 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: frequent-restarts
+  name: frequent-restarts-for-workloads
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: frequent-restarts
+  name: frequent-restarts-for-workloads
 subjects:
   - kind: ServiceAccount
-    name: frequent-restarts
+    name: frequent-restarts-for-workloads
     namespace: {{ .Values.faultInjection.namespace }}
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: frequent-restarts
+  name: frequent-restarts-for-workloads
   namespace: {{ .Values.faultInjection.namespace }}

@@ -2,7 +2,7 @@
 ![ChartVersion](https://img.shields.io/badge/ChartVersion-0.1.0-informational?style=flat)
 
 ## Overview
-This chart can be used to frequently restart a named workload. Some workloads use custom containers which do not always have the necessary binaries to kill their main process. For that reason, we assume the target workload has a livenessprobe, which will terminate the container if a file "/tmp/restart" is present. This can be achieved by adding the following to the manifest:
+This chart can be used to frequently restart a named workload. Some workloads use custom containers which do not always have the necessary binaries to kill their main process. For that reason, we assume the target workload has a livenessprobe, which will terminate the container if a file "/tmp/restart" is present. This can be achieved by adding the following to the workload's manifest:
 ```
     livenessProbe:
       exec:
@@ -44,7 +44,7 @@ faultInjection:
 
 The following command will install the problem pattern (the liveness probe must be done manually on the specified workload).
 ```shell
-helm upgrade --install frequent-restarts ./frequent-restarts-for-workloads --values /frequent-restarts-for-workloads/values.yaml --namespace frequent-restarts --create-namespace
+helm upgrade --install frequent-restarts-for-workloads ./frequent-restarts-for-workloads --values ./frequent-restarts-for-workloads/values.yaml --namespace frequent-restarts-for-workloads --create-namespace
 ```
 
 ## Removal
@@ -53,6 +53,6 @@ Helm uninstall will get rid of everything but the namespaces. Thus we need to is
 > The `faultInjection.namespace` will be left regardless. It is used by many of our charts, so we will not delete it.\
 > Please remove it manually when you are sure it's not needed anymore. 
 ```shell
-helm uninstall frequent-restarts --namespace frequent-restarts
-kubectl delete namespace frequent-restarts
+helm uninstall frequent-restarts-for-workloads --namespace frequent-restarts-for-workloads
+kubectl delete namespace frequent-restarts-for-workloads
 ```

@@ -13,7 +13,7 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          serviceAccountName: frequent-restarts
+          serviceAccountName: frequent-restarts-for-workloads
           containers:
             - name: kill-nginx
               image: bitnami/kubectl:latest
