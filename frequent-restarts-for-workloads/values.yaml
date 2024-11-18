@@ -1,0 +1,9 @@
+faultInjection:
+  workloadName: "my-otel-demo-recommendationservice"
+  workloadType: "deployment"
+  workloadNamespace: "default"
+  namespace: problem-patterns
+  schedule:
+    killProcess: "* * * * *"
+# killProcess: "0,1,2 10 * * *"
+

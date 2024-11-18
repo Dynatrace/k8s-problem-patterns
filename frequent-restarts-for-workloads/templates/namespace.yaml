@@ -1,0 +1,19 @@
+{{- if not (lookup "v1" "Namespace" "" .Values.faultInjection.namespace ) }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.faultInjection.namespace }}
+  annotations:
+    helm.sh/resource-policy: keep
+{{- end }}
+---
+{{- $namespace := .Values.namespace | default .Release.namespace }}
+{{- if $namespace }}
+{{- $lookupResult := lookup "v1" "Namespace" "" $namespace }}
+  {{- if not $lookupResult }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.namespace | default .Release.namespace }}
+  {{- end}}
+{{- end }}

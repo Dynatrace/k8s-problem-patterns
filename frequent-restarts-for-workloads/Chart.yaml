@@ -1,0 +1,5 @@
+apiVersion: v2
+description: periodic restart of a named pod
+name: frequent-restarts
+type: application
+version: 0.1.0
