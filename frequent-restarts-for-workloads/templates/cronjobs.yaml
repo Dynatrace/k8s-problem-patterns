@@ -22,4 +22,4 @@ spec:
                 - -c
                 - |
                   kubectl exec --namespace {{ .Values.faultInjection.workloadNamespace | default .Release.Namespace }} \
-                    {{ .Values.faultInjection.workloadType }}/{{ .Values.faultInjection.workloadName }} -c {{ .Values.faultInjection.containerName }} -- "{{ .Values.faultInjection.command }}"
+                    {{ .Values.faultInjection.workloadType }}/{{ .Values.faultInjection.workloadName }} -c {{ .Values.faultInjection.containerName }} -- {{ .Values.faultInjection.command }}
