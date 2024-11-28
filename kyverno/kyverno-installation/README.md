@@ -10,7 +10,7 @@ The most import items configured are:
 * The correct annotations on the controllers so that the metrics are scraped and ingested into Dynatrace.
 
 ## Installation
-Using helm, we can install the latest kyverno release by following these steps:
+Using helm, we can install the kyverno release that has been verified with our problem patterns, by following these steps:
 * Add the helm repo with `helm repo add kyverno https://kyverno.github.io/kyverno/`
 * Update the repo with `helm repo update`
-* Install Kyverno with `helm install kyverno kyverno/kyverno -n kyverno -f values.yaml --create-namespace --atomic --version 3.3.3`
+* Install Kyverno from the root of this repository with `helm install kyverno kyverno/kyverno -n kyverno -f ./kyverno/kyverno-installation/values.yaml --create-namespace --atomic --version 3.3.3`

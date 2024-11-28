@@ -59,9 +59,7 @@ spec:
       any:
       - resources:
           kinds:
-          - Deployment
-          - StatefulSet
-          - DaemonSet
+          - Pod
           namespaceSelector:
               matchExpressions:
                 - key: dynatrace.com/ownership-required 

@@ -24,9 +24,9 @@ require_requests_pattern:
 ```
 
 ## Installation
-Simply run a `helm upgrade` command from the root of this repository:
+Simply run a `helm upgrade` command assuming you are in the current folder:
 ```shell
-helm upgrade --install kyverno-problem-patterns ./kyverno/problem_patterns --namespace problem-patterns --create-namespace
+helm upgrade --install kyverno-problem-patterns ./kyverno/problem-patterns --namespace problem-patterns --create-namespace
 ```
 
 ## Removal
