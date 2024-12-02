@@ -14,3 +14,9 @@ Using helm, we can install the kyverno release that has been verified with our p
 * Add the helm repo with `helm repo add kyverno https://kyverno.github.io/kyverno/`
 * Update the repo with `helm repo update`
 * Install Kyverno from the root of this repository with `helm install kyverno kyverno/kyverno -n kyverno -f ./kyverno/kyverno-installation/values.yaml --create-namespace --atomic --version 3.3.3`
+
+## Removal
+To remove kyverno, run the following command: 
+```shell
+helm uninstall kyverno --namespace kyverno
+```
