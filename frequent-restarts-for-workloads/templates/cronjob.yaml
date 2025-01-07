@@ -1,8 +1,8 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ .Values.name | default .Release.Name }}-kill-workload
-  namespace: {{ .Values.faultInjection.namespace }}
+  name: {{ .Values.faultInjection.workloadName | default .Release.Name }}-restart-workload
+  namespace: {{ .Release.Namespace }}
 spec:
   concurrencyPolicy: Forbid
   failedJobsHistoryLimit: 5
@@ -15,7 +15,7 @@ spec:
           restartPolicy: OnFailure
           serviceAccountName: frequent-restarts-for-workloads
           containers:
-            - name: kill-nginx
+            - name: restart-workload
               image: bitnami/kubectl:latest
               command:
                 - /bin/sh

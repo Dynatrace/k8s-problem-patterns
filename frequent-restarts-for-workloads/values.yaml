@@ -1,10 +1,9 @@
 faultInjection:
-  workloadName: "my-otel-demo-recommendationservice"
+  workloadName: "astroshop-recommendationservice"
   workloadType: "deployment"
-  workloadNamespace: "opentelemetry-demo"
+  workloadNamespace: "astroshop"
   containerName: "restart-container"
   command: /usr/local/apache2/bin/httpd -k stop
-  namespace: problem-patterns
   schedule:
     killProcess: "0,1,2 10 * * *"
 
