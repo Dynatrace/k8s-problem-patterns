@@ -2,7 +2,7 @@
 ![ChartVersion](https://img.shields.io/badge/ChartVersion-1.2.0-informational?style=flat)
 
 ## Overview
-This chart will deploy `ingress-nginx` in the defined `Namespace`. The controller will be restarted by a `CronJob`.\
+This chart will deploy `ingress-nginx` in the defined`Namespace`. The controller will be restarted by a `CronJob`.\
 By default the pkill will happen at 10:00, 10:01 & 10:02 UTC (`0,1,2 10 * * *`). This can be adjusted in the [values.yaml](values.yaml) file.\
 Each trigger of the `CronJob` results in a failed readiness probe. This failure causes the container to restart.
 
@@ -21,8 +21,8 @@ frequent-restarts-ingress-nginx-controller-748ff659db-gmmhj   1/1     Running   
 ## Installation
 After building the dependency for `ingress-nginx` simply run a `helm upgrade` command from the root of this repository:
 ```shell
-helm dependency build ./frequent-restarts-ingress-nginx
-helm upgrade --install --dependency-update frequent-restarts-ingress-nginx ./frequent-restarts-ingress-nginx --namespace frequent-restarts-ingress-nginx --create-namespace
+helm dependency build ./frequent-restarts
+helm upgrade --install --dependency-update frequent-restarts ./frequent-restarts --namespace frequent-restarts --create-namespace
 ```
 
 ## Removal
@@ -31,8 +31,8 @@ Helm uninstall will get rid of everything but the namespaces. Thus we need to is
 > The `faultInjection.namespace` will be left regardless. It is used by many of our charts, so we will not delete it.\
 > Please remove it manually when you are sure it's not needed anymore. 
 ```shell
-helm uninstall frequent-restarts-ingress-nginx --namespace frequent-restarts-ingress-nginx
-kubectl delete namespace frequent-restarts-ingress-nginx
+helm uninstall frequent-restarts --namespace frequent-restarts
+kubectl delete namespace frequent-restarts
 ```
 
 ## Dependency
