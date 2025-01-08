@@ -1,4 +1,4 @@
-# Problem-Pattern 'frequent-restarts-for-workloads'
+# Problem-Pattern 'frequent-restarts-for-otel-demo'
 ![ChartVersion](https://img.shields.io/badge/ChartVersion-0.1.0-informational?style=flat)
 
 ## Overview
@@ -48,11 +48,11 @@ faultInjection:
 
 The following command will install the problem pattern (the liveness probe must be done manually on the specified workload).
 ```shell
-helm upgrade --install frequent-restarts-for-workloads ./frequent-restarts-for-workloads --namespace problem-patterns --create-namespace
+helm upgrade --install frequent-restarts-for-otel-demo ./frequent-restarts-for-otel-demo --namespace problem-patterns --create-namespace
 ```
 
 ## Removal
 To uninstall:
 ```shell
-helm uninstall frequent-restarts-for-workloads --namespace problem-patterns
+helm uninstall frequent-restarts-for-otel-demo --namespace problem-patterns
 ```

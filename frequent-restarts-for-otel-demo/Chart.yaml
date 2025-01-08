@@ -1,0 +1,5 @@
+apiVersion: v2
+description: periodic restart of a named workload in the official opentelemetry demo
+name: frequent-restarts-for-otel-demo
+type: application
+version: 0.1.0

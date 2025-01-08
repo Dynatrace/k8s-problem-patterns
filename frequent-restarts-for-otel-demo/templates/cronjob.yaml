@@ -13,7 +13,7 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          serviceAccountName: frequent-restarts-for-workloads
+          serviceAccountName: frequent-restarts-for-otel-demo
           containers:
             - name: restart-workload
               image: bitnami/kubectl:latest

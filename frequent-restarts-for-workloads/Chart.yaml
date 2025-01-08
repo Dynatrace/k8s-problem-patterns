@@ -1,5 +1,0 @@
-apiVersion: v2
-description: periodic restart of a named pod
-name: frequent-restarts-for-workloads
-type: application
-version: 0.1.0
