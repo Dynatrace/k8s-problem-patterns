@@ -1,0 +1,9 @@
+faultInjection:
+  workloadName: "astroshop-recommendationservice"
+  workloadType: "deployment"
+  workloadNamespace: "astroshop"
+  containerName: "restart-container"
+  command: /usr/local/apache2/bin/httpd -k stop
+  schedule:
+    killProcess: "0,1,2 10 * * *"
+

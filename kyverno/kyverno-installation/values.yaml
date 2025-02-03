@@ -1,0 +1,41 @@
+config:
+  webhooks:
+    # Exclude namespaces
+    namespaceSelector:
+      matchExpressions:
+        - key: kubernetes.io/metadata.name
+          operator: NotIn
+          values:
+            - kube-system
+
+features:
+  backgroundScan:
+    backgroundScanInterval: 5m
+
+admissionController:
+  metricsService:
+    annotations:
+      metrics.dynatrace.com/path: "/metrics"
+      metrics.dynatrace.com/port: "8000"
+      metrics.dynatrace.com/scrape: "true"
+
+reportsController:
+  metricsService:
+    annotations:
+      metrics.dynatrace.com/path: "/metrics"
+      metrics.dynatrace.com/port: "8000"
+      metrics.dynatrace.com/scrape: "true"
+
+backgroundController:
+  metricsService:
+    annotations:
+      metrics.dynatrace.com/path: "/metrics"
+      metrics.dynatrace.com/port: "8000"
+      metrics.dynatrace.com/scrape: "true"
+
+cleanupController:
+  metricsService:
+    annotations:
+      metrics.dynatrace.com/path: "/metrics"
+      metrics.dynatrace.com/port: "8000"
+      metrics.dynatrace.com/scrape: "true"

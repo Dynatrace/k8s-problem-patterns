@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.workload_namespace }}
+  labels:
+  {{- if .Values.require_annotations_pattern.enabled }}
+    app: finance
+  {{- end }}
+  {{- if .Values.require_ownership_label_pattern.enabled }}
+    dynatrace.com/ownership-required: ""
+  {{- end }}
+  {{- if .Values.require_requests_pattern.enabled }}
+    dynatrace.com/requests-required: ""
+  {{- end }}
+
