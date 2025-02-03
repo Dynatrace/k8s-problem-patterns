@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "demo-app.fullname" . }}-manage-config-binding
+  labels:
+    {{- include "demo-app.labels" . | nindent 4 }}
+subjects:
+- kind: ServiceAccount
+  name: {{ include "demo-app.serviceAccountName" . }}
+  namespace: {{ .Values.faultInjection.namespace | default .Release.Namespace }}
+roleRef:
+  kind: Role
+  name: {{ include "demo-app.fullname" . }}-manage-config
+  apiGroup: rbac.authorization.k8s.io
