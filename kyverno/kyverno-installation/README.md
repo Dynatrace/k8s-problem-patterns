@@ -3,7 +3,7 @@
 ####
 
 ## Summary
-The kyverno problem patterns based in this repo require Kyverno. This folder contains a `values.yaml` file with the correct configuration and annotations needed for the problem patters to appear in a Dynatrace tenant.
+The kyverno problem patterns based in this repo require Kyverno. This folder contains a `values.yaml` file with the correct configuration and annotations needed for the problem patterns to appear in a Dynatrace tenant.
 
 The most import items configured are:
 * A background scan interval of 5 minutes to ensure we always have a recent event.
