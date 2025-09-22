@@ -11,7 +11,7 @@ spec:
         spec:
           containers:
             - name: scale-up
-              image: bitnami/kubectl:latest
+              image: bitnamilegacy/kubectl:1.33.4
               command:
                 - /bin/sh
                 - -c
@@ -35,7 +35,7 @@ spec:
         spec:
           containers:
             - name: scale-down
-              image: bitnami/kubectl:latest
+              image: bitnamilegacy/kubectl:1.33.4
               command:
                 - /bin/sh
                 - -c
@@ -59,7 +59,7 @@ spec:
         spec:
           containers:
             - name: patch
-              image: bitnami/kubectl:1.23.7
+              image: bitnamilegacy/kubectl:1.33.4
               command:
                 - sh
                 - -c
