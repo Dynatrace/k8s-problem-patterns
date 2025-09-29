@@ -16,7 +16,7 @@ spec:
           serviceAccountName: frequent-restarts-for-otel-demo
           containers:
             - name: restart-workload
-              image: bitnamilegacy/kubectl:1.33.4
+              image: alpine/kubectl:1.34.1
               command:
                 - /bin/sh
                 - -c

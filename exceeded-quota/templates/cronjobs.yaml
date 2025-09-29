@@ -15,7 +15,7 @@ spec:
           serviceAccountName: exceeded-quota
           containers:
           - name: scale-up
-            image: bitnamilegacy/kubectl:1.33.4
+            image: alpine/kubectl:1.34.1
             args:
               - scale
               - deployment
@@ -41,7 +41,7 @@ spec:
           serviceAccountName: exceeded-quota
           containers:
           - name: scale-up
-            image: bitnamilegacy/kubectl:1.33.4
+            image: alpine/kubectl:1.34.1
             args:
               - scale
               - deployment
@@ -67,7 +67,7 @@ spec:
           serviceAccountName: exceeded-quota
           containers:
           - name: scale-down
-            image: bitnamilegacy/kubectl:1.33.4
+            image: alpine/kubectl:1.34.1
             args:
               - scale
               - deployment

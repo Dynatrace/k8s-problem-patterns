@@ -15,7 +15,7 @@ spec:
           serviceAccountName: {{ include "demo-app.serviceAccountName" . }}
           containers:
           - name: toggle-configmap
-            image: bitnamilegacy/kubectl:1.33.4
+            image: alpine/kubectl:1.34.1
             command: ["/bin/bash", "-c", "/scripts/toggle-configmap.sh"]
             volumeMounts:
             - name: script-volume

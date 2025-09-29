@@ -13,7 +13,7 @@ spec:
         spec:
           containers:
             - name: scale-up
-              image: bitnamilegacy/kubectl:1.33.4
+              image: alpine/kubectl:1.34.1
               command:
                 - /bin/sh
                 - -c
@@ -37,7 +37,7 @@ spec:
         spec:
           containers:
             - name: scale-down
-              image: bitnamilegacy/kubectl:1.33.4
+              image: alpine/kubectl:1.34.1
               command:
                 - /bin/sh
                 - -c
