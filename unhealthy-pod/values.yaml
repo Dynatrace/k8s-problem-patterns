@@ -23,11 +23,11 @@ faultInjection:
     value2: http://example.com/this/is/a/webservice/not/a/db
     sleep: 10
     image: 
-      repository: bitnami/kubectl
+      repository: alpine/kubectl
       # This sets the pull policy for images.
       pullPolicy: IfNotPresent
       # Overrides the image tag whose default is the chart appVersion.
-      tag: "latest"
+      tag: "1.34.1"
   serviceAccount:
     create: true
     automount: true
