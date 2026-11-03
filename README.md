@@ -1,3 +1,9 @@
+# Archive Notice
+
+Use this notice when a repository has been archived and is no longer actively maintained.
+
+Place the notice near the top of the repository `README.md` so users can immediately understand the repository's status.
+
 # k8s-problem-patterns
 [![GitHub license](https://img.shields.io/github/license/kubernetes/ingress-nginx.svg)](https://github.com/Dynatrace/k8s-problem-patterns/blob/main/LICENSE)
 ![GitHub contribution](https://img.shields.io/badge/contributions-welcome-orange.svg)
